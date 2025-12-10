@@ -60,8 +60,7 @@ async function handler(request: AuthenticatedAdminRequest) {
       prisma.user.count({ where }),
     ]);
 
-    // Remove sensitive data
-    const sanitizedUsers = users.map(({ passwordHash, ...user }) => user);
+    const sanitizedUsers = users.map(({ passwordHash, ...user }: any) => user);
 
     return NextResponse.json({
       success: true,

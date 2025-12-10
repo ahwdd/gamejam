@@ -3,6 +3,15 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+/* add this to package.json
+  "scripts": {
+    "seed": "ts-node prisma/seed.js",
+  },
+  "prisma": {
+    "seed": "npm run seed"
+  },
+*/
+
 async function main() {
   const username = process.env.ADMIN_USERNAME ?? 'admin';
   const password = process.env.ADMIN_PASSWORD ?? 'admin123';
