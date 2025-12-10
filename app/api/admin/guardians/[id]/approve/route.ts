@@ -1,29 +1,37 @@
+// /api/guardian/approve/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminAuth, AuthenticatedAdminRequest } from '@/lib/middleware/adminAuth';
 import { prisma } from '@/lib/prisma';
 
-async function handler(request: AuthenticatedAdminRequest, { params }: { params: { id: string } }) {
+async function handler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing guardian id' }, { status: 400 });
+    }
+
     const adminId = request.adminId!;
     const body = await request.json();
     const { note } = body;
 
     // Get guardian
     const guardian = await prisma.guardian.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { user: true },
     });
 
     if (!guardian) {
-      return NextResponse.json(
-        { error: 'Guardian not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Guardian not found' }, { status: 404 });
     }
 
     // Update guardian approval status
     const updatedGuardian = await prisma.guardian.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         approvalStatus: 'approved',
         approvedBy: adminId,
@@ -40,7 +48,7 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
       },
     });
 
-    // TODO: Send notification to user and guardian
+    // Logging for audit/debug
     console.log('\n========================================');
     console.log('✅ GUARDIAN APPROVED');
     console.log('========================================');
@@ -57,13 +65,10 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
     });
   } catch (error) {
     console.error('Approve guardian error:', error);
-    return NextResponse.json(
-      { error: 'Failed to approve guardian' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to approve guardian' }, { status: 500 });
   }
 }
 
-export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
-  return withAdminAuth(request, (req) => handler(req, context));
+export async function PATCH(request: NextRequest, context: { params: any }) {
+  return withAdminAuth(request, (req) => handler(req, context.params));
 }

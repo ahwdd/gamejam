@@ -1,3 +1,4 @@
+// /api/guardian/attach-student/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminAuth, AuthenticatedAdminRequest } from '@/lib/middleware/adminAuth';
 import { prisma } from '@/lib/prisma';
@@ -7,21 +8,28 @@ const attachSchema = z.object({
   studentId: z.string().min(1, 'Student ID is required'),
 });
 
-async function handler(request: AuthenticatedAdminRequest, { params }: { params: { id: string } }) {
+async function handler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing guardian id' }, { status: 400 });
+    }
+
     const body = await request.json();
     const { studentId } = attachSchema.parse(body);
 
     // Get guardian
     const guardian = await prisma.guardian.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!guardian) {
-      return NextResponse.json(
-        { error: 'Guardian not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Guardian not found' }, { status: 404 });
     }
 
     // Check if guardian is approved
@@ -38,21 +46,15 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
     });
 
     if (!student) {
-      return NextResponse.json(
-        { error: 'Student not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
     // Check if student is a minor
     if (!student.isMinor) {
-      return NextResponse.json(
-        { error: 'Student is not a minor' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Student is not a minor' }, { status: 400 });
     }
 
-    // Check if student already has this guardian
+    // Check if student is primary
     if (guardian.userId === studentId) {
       return NextResponse.json(
         { error: 'This is the primary student for this guardian' },
@@ -61,7 +63,7 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
     }
 
     // Check if already in additional students
-    const currentAdditional = guardian.additionalStudents || [];
+    const currentAdditional: string[] = guardian.additionalStudents || [];
     if (currentAdditional.includes(studentId)) {
       return NextResponse.json(
         { error: 'Student already attached to this guardian' },
@@ -71,7 +73,7 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
 
     // Add student to guardian's additional students
     const updatedGuardian = await prisma.guardian.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         additionalStudents: {
           set: [...currentAdditional, studentId],
@@ -112,13 +114,10 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
       );
     }
 
-    return NextResponse.json(
-      { error: 'Failed to attach guardian to student' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to attach guardian to student' }, { status: 500 });
   }
 }
 
-export async function POST(request: NextRequest, context: { params: { id: string } }) {
-  return withAdminAuth(request, (req) => handler(req, context));
+export async function POST(request: NextRequest, context: { params: any }) {
+  return withAdminAuth(request, (req) => handler(req, context.params));
 }

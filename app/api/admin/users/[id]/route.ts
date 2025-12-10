@@ -1,11 +1,19 @@
+// /api/admin/users/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminAuth, AuthenticatedAdminRequest } from '@/lib/middleware/adminAuth';
 import { prisma } from '@/lib/prisma';
 
-async function getHandler(request: AuthenticatedAdminRequest, { params }: { params: any }) {
+async function getHandler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+    if (!id) return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
+
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         guardian: true,
         registrations: {
@@ -33,14 +41,11 @@ async function getHandler(request: AuthenticatedAdminRequest, { params }: { para
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Remove sensitive data
-    const { passwordHash, ...userWithoutPassword } = user;
+    const { passwordHash, ...userWithoutPassword } = user as any;
 
     return NextResponse.json({
       success: true,
@@ -48,15 +53,19 @@ async function getHandler(request: AuthenticatedAdminRequest, { params }: { para
     });
   } catch (error) {
     console.error('Get user error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch user' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 });
   }
 }
 
-async function patchHandler(request: AuthenticatedAdminRequest, { params }: { params: any }) {
+async function patchHandler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+    if (!id) return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
+
     const body = await request.json();
 
     // Admin can update most fields
@@ -75,22 +84,22 @@ async function patchHandler(request: AuthenticatedAdminRequest, { params }: { pa
       'profileComplete',
       'guardianApprovalStatus',
       'isActive',
-    ];
+    ] as const;
 
-    const updateData: any = {};
+    const updateData: Record<string, any> = {};
     for (const field of allowedFields) {
-      if (body[field] !== undefined) {
+      if (Object.prototype.hasOwnProperty.call(body, field)) {
         updateData[field] = body[field];
       }
     }
 
-    // Convert dateOfBirth to Date if provided
+    // Convert dateOfBirth to Date if provided and non-empty
     if (updateData.dateOfBirth) {
       updateData.dateOfBirth = new Date(updateData.dateOfBirth);
     }
 
     const user = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         guardian: true,
@@ -98,7 +107,7 @@ async function patchHandler(request: AuthenticatedAdminRequest, { params }: { pa
     });
 
     // Remove sensitive data
-    const { passwordHash, ...userWithoutPassword } = user;
+    const { passwordHash, ...userWithoutPassword } = user as any;
 
     return NextResponse.json({
       success: true,
@@ -107,18 +116,22 @@ async function patchHandler(request: AuthenticatedAdminRequest, { params }: { pa
     });
   } catch (error) {
     console.error('Update user error:', error);
-    return NextResponse.json(
-      { error: 'Failed to update user' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
   }
 }
 
-async function deleteHandler(request: AuthenticatedAdminRequest, { params }: { params: any }) {
+async function deleteHandler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+    if (!id) return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
+
     // Soft delete by setting isActive to false
-    const user = await prisma.user.update({
-      where: { id: params.id },
+    await prisma.user.update({
+      where: { id },
       data: { isActive: false },
     });
 
@@ -128,21 +141,18 @@ async function deleteHandler(request: AuthenticatedAdminRequest, { params }: { p
     });
   } catch (error) {
     console.error('Deactivate user error:', error);
-    return NextResponse.json(
-      { error: 'Failed to deactivate user' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to deactivate user' }, { status: 500 });
   }
 }
 
 export async function GET(request: NextRequest, context: { params: any }) {
-  return withAdminAuth(request, (req) => getHandler(req, context));
+  return withAdminAuth(request, (req) => getHandler(req, context.params));
 }
 
 export async function PATCH(request: NextRequest, context: { params: any }) {
-  return withAdminAuth(request, (req) => patchHandler(req, context));
+  return withAdminAuth(request, (req) => patchHandler(req, context.params));
 }
 
 export async function DELETE(request: NextRequest, context: { params: any }) {
-  return withAdminAuth(request, (req) => deleteHandler(req, context));
+  return withAdminAuth(request, (req) => deleteHandler(req, context.params));
 }

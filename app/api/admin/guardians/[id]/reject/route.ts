@@ -1,3 +1,4 @@
+// /api/guardian/reject/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminAuth, AuthenticatedAdminRequest } from '@/lib/middleware/adminAuth';
 import { prisma } from '@/lib/prisma';
@@ -7,28 +8,35 @@ const rejectSchema = z.object({
   reason: z.string().min(10, 'Rejection reason must be at least 10 characters'),
 });
 
-async function handler(request: AuthenticatedAdminRequest, { params }: { params: { id: string } }) {
+async function handler(
+  request: AuthenticatedAdminRequest,
+  paramsPromise: any
+): Promise<NextResponse> {
   try {
+    const params = await paramsPromise;
+    const id = String(params?.id ?? '').trim();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing guardian id' }, { status: 400 });
+    }
+
     const adminId = request.adminId!;
     const body = await request.json();
     const { reason } = rejectSchema.parse(body);
 
     // Get guardian
     const guardian = await prisma.guardian.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { user: true },
     });
 
     if (!guardian) {
-      return NextResponse.json(
-        { error: 'Guardian not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Guardian not found' }, { status: 404 });
     }
 
     // Update guardian approval status
     const updatedGuardian = await prisma.guardian.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         approvalStatus: 'rejected',
         rejectionReason: reason,
@@ -73,13 +81,10 @@ async function handler(request: AuthenticatedAdminRequest, { params }: { params:
       );
     }
 
-    return NextResponse.json(
-      { error: 'Failed to reject guardian' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to reject guardian' }, { status: 500 });
   }
 }
 
-export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
-  return withAdminAuth(request, (req) => handler(req, context));
+export async function PATCH(request: NextRequest, context: { params: any }) {
+  return withAdminAuth(request, (req) => handler(req, context.params));
 }
