@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+    /* Primary Colors */
+  --admin-primary: #8b5cf6;
+  --admin-secondary: #ec4899;
+  --admin-accent: #06b6d4;
+
+  /* Dark Background */
+  --admin-bg: #0f172a; /* slate-900 */
+  --admin-bg-card: #1e293b; /* slate-800 */
+  --admin-bg-hover: #334155; /* slate-700 */
+
+  /* Text */
+  --admin-text: #f1f5f9; /* slate-100 */
+  --admin-text-muted: #94a3b8; /* slate-400 */
+
+  /* Status Colors */
+  --admin-success: #10b981;
+  --admin-warning: #f59e0b;
+  --admin-danger: #ef4444;
+}
+
+@layer base {
+  :root {
+    /* Admin Dark Theme */
+    --admin-bg: 15 23 42; /* slate-900 */
+    --admin-bg-card: 30 41 59; /* slate-800 */
+    --admin-bg-hover: 51 65 85; /* slate-700 */
+    --admin-primary: 139 92 246; /* violet-500 */
+    --admin-secondary: 236 72 153; /* pink-500 */
+    --admin-accent: 6 182 212; /* cyan-500 */
+    --admin-text: 241 245 249; /* slate-100 */
+    --admin-text-muted: 148 163 184; /* slate-400 */
+    --admin-success: 16 185 129; /* green-500 */
+    --admin-warning: 245 158 11; /* amber-500 */
+    --admin-danger: 239 68 68; /* red-500 */
+  }
+}
+
+/* Admin specific classes */
+.admin-bg { background-color: rgb(var(--admin-bg)); }
+.admin-card { background-color: rgb(var(--admin-bg-card)); }
+.admin-text { color: rgb(var(--admin-text)); }
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

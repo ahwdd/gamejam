@@ -1,0 +1,627 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  username     String   @unique
+  passwordHash String
+  email        String?  @unique
+  firstName    String?
+  lastName     String?
+  role         String   @default("admin")
+  createdBy    String?  @db.ObjectId
+  isActive     Boolean  @default(true)
+  lastLogin    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model User {
+  id                    String                     @id @default(auto()) @map("_id") @db.ObjectId
+  email                 String?                    @unique
+  passwordHash          String?
+  firstName             String?
+  lastName              String?
+  phoneNumber           String?
+  phoneKey              String?
+  dateOfBirth           DateTime?
+  isMinor               Boolean                    @default(false)
+  nationalID            String?
+  preferredLanguage     String                     @default("en")
+  profilePhoto          String?
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  isActive              Boolean                    @default(true)
+  school                String?
+  grade                 String?
+  address               String?
+  city                  String?
+  country               String?                    @default("AE")
+  profileComplete       Boolean                    @default(false)
+  guardianApprovalStatus String?                   // null, "pending", "approved", "rejected"
+  
+  // Relations
+  registrations         Registration[]
+  guardian              Guardian?
+  teamMembers           TeamMember[]
+  teamMatchingPrefs     TeamMatchingPreference[]
+  winnerDocuments       WinnerDocument[]
+  notifications         Notification[]
+  userActivities        UserActivity[]
+  teamsAsLeader         Team[]                     @relation("TeamLeader")
+  equipmentAssignments  Equipment[]                @relation("UserEquipment")
+
+  @@map("users")
+}
+
+model Guardian {
+  id                    String             @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String             @db.ObjectId @unique
+  firstName             String
+  lastName              String
+  email                 String
+  phoneNumber           String
+  nationalID            String?
+  relationshipToStudent String
+  consentGiven          Boolean            @default(false)
+  consentDate           DateTime?
+  consentDocumentURL    String?
+  signatureURL          String?
+  phoneKey              String
+  nationalIDImageURL    String?
+  approvalStatus        String             @default("pending")
+  rejectionReason       String?
+  approvedBy            String?            @db.ObjectId
+  approvedAt            DateTime?
+  consentToken          String?            @unique
+  updatedAt             DateTime           @updatedAt
+  additionalStudents    String[]           // Array of user IDs
+  willAttendEvent       Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  
+  // Relations
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  winnerDocuments       WinnerDocument[]
+
+  @@map("guardians")
+}
+
+model Event {
+  id                    String                     @id @default(auto()) @map("_id") @db.ObjectId
+  eventNameEN           String
+  eventNameAR           String?
+  descriptionEN         String?                 
+  descriptionAR         String?                 
+  startDate             DateTime
+  endDate               DateTime
+  venueName             String?
+  venueAddress          String?
+  maxParticipants       Int?
+  currentParticipants   Int                        @default(0)
+  registrationOpenDate  DateTime?
+  registrationCloseDate DateTime?
+  themeEN               String?
+  themeAR               String?
+  themeAnnouncementDate DateTime?
+  eventStatus           String                     @default("draft")
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  
+  // Relations
+  registrations         Registration[]
+  teams                 Team[]
+  eventSchedule         EventSchedule[]
+  gameSubmissions       GameSubmission[]
+  judging               Judging[]
+  awards                Award[]
+  winners               Winner[]
+  sponsors              Sponsor[]
+  equipment             Equipment[]
+  catering              Catering[]
+  giveaways             Giveaway[]
+  marketingCampaigns    MarketingCampaign[]
+  contentPages          ContentPage[]
+  mediaGallery          MediaGallery[]
+  legalPermits          LegalPermit[]
+  teamMatchingPrefs     TeamMatchingPreference[]
+
+  @@map("events")
+}
+
+model Registration {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String    @db.ObjectId
+  eventId               String    @db.ObjectId
+  registrationType      String?
+  skillLevel            String?
+  unityExperience       String?
+  programmingLanguages  Json?
+  preferredRole         String?
+  dietaryRestrictions   String?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  tShirtSize            String?
+  registrationStatus    String     @default("pending")
+  checkedIn             Boolean    @default(false)
+  checkInTime           DateTime?
+  badgeNumber           String?
+  lanyardIssued         Boolean    @default(false)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  
+  // Relations
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("registrations")
+}
+
+model Team {
+  id                    String             @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String             @db.ObjectId
+  teamName              String
+  teamNumber            Int?
+  tableNumber           Int?
+  maxMembers            Int                @default(4)
+  currentMemberCount    Int                @default(0)
+  teamLeaderUserId      String?             @db.ObjectId
+  isComplete            Boolean            @default(false)
+  teamStatus            String             @default("forming")
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  
+  // Relations
+  event                 Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  teamLeader            User?              @relation("TeamLeader", fields: [teamLeaderUserId], references: [id])
+  teamMembers           TeamMember[]
+  gameSubmission        GameSubmission?
+  winners               Winner[]
+  equipment             Equipment[]
+  mediaGallery          MediaGallery[]
+  videoSubmissions      VideoSubmission[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  teamId                String     @db.ObjectId
+  userId                String     @db.ObjectId
+  role                  String?
+  joinedAt              DateTime   @default(now())
+  leftAt                DateTime?
+  isActive              Boolean    @default(true)
+  
+  // Relations
+  team                  Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+model TeamMatchingPreference {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String     @db.ObjectId
+  eventId               String     @db.ObjectId
+  lookingForTeam        Boolean    @default(true)
+  preferredTeamSize     Int?
+  preferredSkillMix     Json?
+  availableHours        Json?
+  introductionMessage   String? 
+  createdAt             DateTime   @default(now())
+  
+  // Relations
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("team_matching_preferences")
+}
+
+model EventSchedule {
+  id                    String      @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String      @db.ObjectId
+  day                   Int
+  activityNameEN        String
+  activityNameAR        String?
+  startTime             String
+  endTime               String
+  activityType          String?
+  location              String?
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("event_schedules")
+}
+
+model GameSubmission {
+  id                    String           @id @default(auto()) @map("_id") @db.ObjectId
+  teamId                String             @db.ObjectId @unique
+  eventId               String             @db.ObjectId
+  gameTitle             String
+  gameDescriptionEN     String?
+  gameDescriptionAR     String?
+  unityVersion          String?
+  gameFileURL           String?
+  gameFileSizeMB        Float?
+  platformTarget        String?
+  submissionDate        DateTime?
+  submissionStatus      String           @default("draft")
+  playTestable          Boolean          @default(false)
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  
+  // Relations
+  team                  Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  event                 Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  videoSubmissions      VideoSubmission[]
+  judging               Judging[]
+  winners               Winner[]
+
+  @@map("game_submissions")
+}
+
+model VideoSubmission {
+  id                    String          @id @default(auto()) @map("_id") @db.ObjectId
+  teamId                String             @db.ObjectId
+  submissionId          String?             @db.ObjectId
+  videoTitle            String
+  videoDescription      String?       
+  videoURL              String
+  videoDuration         Int?
+  videoFileSizeMB       Float?
+  thumbnailURL          String?
+  uploadDate            DateTime         @default(now())
+  videoStatus           String           @default("processing")
+  viewCount             Int              @default(0)
+  createdAt             DateTime         @default(now())
+  
+  // Relations
+  team                  Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  submission            GameSubmission?  @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+
+  @@map("video_submissions")
+}
+
+model Judge {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  firstName             String
+  lastName              String
+  email                 String     @unique
+  phoneNumber           String?
+  companyOrganization   String?
+  titlePosition         String?
+  bio                   String? 
+  profilePhoto          String?
+  judgeType             String?
+  flightDetails         Json?
+  hotelDetails          Json?
+  vipAccess             Boolean    @default(false)
+  createdAt             DateTime   @default(now())
+  
+  // Relations
+  judging               Judging[]
+
+  @@map("judges")
+}
+
+model Mentor {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  firstName             String
+  lastName              String
+  email                 String     @unique
+  phoneNumber           String?
+  expertise             Json?
+  companyOrganization   String?
+  bio                   String? 
+  profilePhoto          String?
+  availabilitySchedule  Json?
+  assignedTeams         Json?
+  createdAt             DateTime   @default(now())
+
+  @@map("mentors")
+}
+
+model Judging {
+  id                    String           @id @default(auto()) @map("_id") @db.ObjectId
+  submissionId          String           @db.ObjectId
+  judgeId               String           @db.ObjectId
+  eventId               String           @db.ObjectId
+  criteriaScores        Json?
+  totalScore            Float?
+  comments              String?       
+  judgingDate           DateTime?
+  judgingStatus         String           @default("pending")
+  
+  // Relations
+  submission            GameSubmission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  judge                 Judge            @relation(fields: [judgeId], references: [id], onDelete: Cascade)
+  event                 Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, judgeId])
+  @@map("judging")
+}
+
+model Award {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  awardNameEN           String
+  awardNameAR           String?
+  awardType             String
+  prizeAmountAED        Float?
+  descriptionEN         String? 
+  descriptionAR         String? 
+  createdAt             DateTime   @default(now())
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  winners               Winner[]
+
+  @@map("awards")
+}
+
+model Winner {
+  id                    String             @id @default(auto()) @map("_id") @db.ObjectId
+  awardId               String             @db.ObjectId
+  teamId                String             @db.ObjectId
+  submissionId          String             @db.ObjectId
+  eventId               String             @db.ObjectId
+  announcementDate      DateTime?
+  prizeStatus           String             @default("pending")
+  foamChequePhoto       String?
+  medalDistributed      Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  
+  // Relations
+  award                 Award              @relation(fields: [awardId], references: [id], onDelete: Cascade)
+  team                  Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  submission            GameSubmission     @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  event                 Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  winnerDocuments       WinnerDocument[]
+
+  @@map("winners")
+}
+
+model WinnerDocument {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  winnerId              String             @db.ObjectId
+  userId                String             @db.ObjectId
+  guardianId            String?             @db.ObjectId
+  documentType          String
+  documentURL           String?
+  signatureURL          String?
+  signedDate            DateTime?
+  signedByName          String?
+  createdAt             DateTime   @default(now())
+  
+  // Relations
+  winner                Winner     @relation(fields: [winnerId], references: [id], onDelete: Cascade)
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  guardian              Guardian?  @relation(fields: [guardianId], references: [id], onDelete: SetNull)
+
+  @@map("winner_documents")
+}
+
+model Sponsor {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  companyName           String
+  logoURL               String?
+  sponsorTier           String?
+  websiteURL            String?
+  descriptionEN         String? 
+  descriptionAR         String? 
+  approvalStatus        String     @default("pending")
+  heritageApproved      Boolean    @default(false)
+  displayOrder          Int?
+  createdAt             DateTime   @default(now())
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  giveaways             Giveaway[]
+
+  @@map("sponsors")
+}
+
+model Equipment {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  equipmentType         String
+  brand                 String?
+  model                 String?
+  serialNumber          String?    @unique
+  assignedToTeamId      String?    @db.ObjectId
+  assignedToUserId      String?    @db.ObjectId
+  assignmentDate        DateTime?
+  returnDate            DateTime?
+  status                String     @default("available")
+  notes                 String? 
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  team                  Team?      @relation(fields: [assignedToTeamId], references: [id], onDelete: SetNull)
+  user                  User?      @relation("UserEquipment", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+
+  @@map("equipment")
+}
+
+model Catering {
+  id                    String      @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String      @db.ObjectId
+  day                   Int
+  mealType              String
+  scheduledTime         String
+  headCount             Int?
+  vendorName            String?
+  menuEN                String? 
+  menuAR                String? 
+  specialDietAccommodations Json?
+  status                String     @default("planned")
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("catering")
+}
+
+model Giveaway {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  itemName              String
+  itemDescriptionEN     String? 
+  itemDescriptionAR     String? 
+  quantity              Int
+  distributedCount      Int        @default(0)
+  sponsorId             String?    @db.ObjectId
+  distributionMethod    String?
+  confirmedBy           String?
+  status                String     @default("planned")
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  sponsor               Sponsor?   @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+
+  @@map("giveaways")
+}
+
+model MarketingCampaign {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  campaignName          String
+  platform              String
+  partnerOrganization   String?
+  contentEN             String? 
+  contentAR             String? 
+  mediaURLs             Json?
+  scheduledDate         DateTime?
+  publishedDate         DateTime?
+  reach                 Int?
+  engagement            Int?
+  status                String     @default("draft")
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("marketing_campaigns")
+}
+
+model ContentPage {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String?    @db.ObjectId
+  pageSlug              String     @unique
+  pageTitleEN           String
+  pageTitleAR           String?
+  contentEN             String? 
+  contentAR             String? 
+  pageType              String?
+  isPublished           Boolean    @default(false)
+  seoMetaEN             Json?
+  seoMetaAR             Json?
+  viewCount             Int        @default(0)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  
+  // Relations
+  event                 Event?     @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@map("content_pages")
+}
+
+model MediaGallery {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String?    @db.ObjectId
+  teamId                String?    @db.ObjectId
+  mediaType             String
+  fileURL               String
+  thumbnailURL          String?
+  caption               String?
+  photographerVideographer String?
+  captureDate           DateTime?
+  uploadDate            DateTime   @default(now())
+  isPublic              Boolean    @default(true)
+  tags                  Json?
+  
+  // Relations
+  event                 Event?     @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  team                  Team?      @relation(fields: [teamId], references: [id], onDelete: SetNull)
+
+  @@map("media_gallery")
+}
+
+model Notification {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String     @db.ObjectId
+  notificationType      String
+  subject               String
+  messageEN             String  
+  messageAR             String? 
+  sentDate              DateTime   @default(now())
+  readDate              DateTime?
+  status                String     @default("sent")
+  priority              String     @default("normal")
+  
+  // Relations
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Venue {
+  id                    String      @id @default(auto()) @map("_id") @db.ObjectId
+  venueName             String
+  address               String?
+  contactPerson         String?
+  contactEmail          String?
+  contactPhone          String?
+  capacity              Int?
+  floorPlanURL          String?
+  facilitiesNotes       String? 
+  itContactName         String?
+  itContactPhone        String?
+  heritageApprovalRequired Boolean @default(false)
+
+  @@map("venues")
+}
+
+model LegalPermit {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  eventId               String     @db.ObjectId
+  permitType            String
+  issuingAuthority      String
+  applicationDate       DateTime?
+  approvalDate          DateTime?
+  permitDocumentURL     String?
+  expiryDate            DateTime?
+  status                String     @default("pending")
+  handledBy             String?
+  notes                 String? 
+  
+  // Relations
+  event                 Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("legal_permits")
+}
+
+model UserActivity {
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String     @db.ObjectId
+  activityType          String
+  activityDetails       Json?
+  ipAddress             String?
+  userAgent             String?
+  timestamp             DateTime   @default(now())
+  
+  // Relations
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_activities")
+}
