@@ -7,7 +7,7 @@ interface User {
   lastName: string | null;
   phoneNumber: string | null;
   phoneKey: string | null;
-  dateOfBirth: Date | null;
+  dateOfBirth: Date | string | null;
   isMinor: boolean;
   preferredLanguage: string;
   profilePhoto: string | null;
@@ -19,8 +19,8 @@ interface User {
   profileComplete: boolean;
   guardianApprovalStatus: string | null;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
   guardian?: any;
 }
 
