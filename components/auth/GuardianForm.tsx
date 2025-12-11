@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import CountrySelect from "@/components/auth/CountrySelect";
 import { Country } from "@/lib/types/countries";
+import Select from "../ui/Select";
 
 interface GuardianFormProps {
   onSuccess?: (consentLink?: string) => void;
@@ -184,14 +185,20 @@ export default function GuardianForm({
         </div>
       </div>
 
-      <Input
+      <Select
         label="Relationship to You 👨‍👩‍👧"
-        type="text"
         value={relationshipToStudent}
         onChange={(e) => setRelationshipToStudent(e.target.value)}
-        placeholder="e.g., Mother, Father, Guardian"
+        placeholder="Select relationship"
         required
+        options={[
+          { value: "mother", label: "Mother" },
+          { value: "father", label: "Father" },
+          { value: "guardian", label: "Guardian" },
+          { value: "other", label: "Other" },
+        ]}
       />
+
 
       <div className="p-4 rounded-xl bg-yellow-50 border-2 border-yellow-200">
         <p className="text-yellow-800 text-sm font-medium">

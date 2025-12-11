@@ -182,7 +182,7 @@ export default function DashboardPage() {
         )}
 
         {/* Guardian Approval Pending Alert */}
-        {user?.isMinor && (user?.guardianApprovalStatus === "pending"|| !user?.guardianApprovalStatus) && (
+        {user?.isMinor && (user?.guardianApprovalStatus === "pending"|| !user?.guardianApprovalStatus) && !needsGuardianForm && (
           <div className="bg-orange-50 border-4 border-orange-400 rounded-3xl p-6 mb-8 shadow-2xl">
             <div className="flex items-start gap-4">
               <span className="text-5xl">⏳</span>
@@ -277,7 +277,7 @@ export default function DashboardPage() {
         )}
 
         {/* Welcome Section */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8 border-4 border-purple-200">
+        {user?.profileComplete && <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8 border-4 border-purple-200">
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
               <h2 className="text-4xl font-black text-gray-900 mb-2 flex items-center gap-3">
@@ -292,9 +292,10 @@ export default function DashboardPage() {
               {user?.firstName?.charAt(0).toUpperCase() || "?"}
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* User Info Card */}
+        {user?.profileComplete && 
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8 border-4 border-blue-200">
           <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
             <span className="text-3xl">👤</span>
@@ -336,80 +337,82 @@ export default function DashboardPage() {
               </p>
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* Quick Actions */}
-        <h3 className="text-3xl font-black text-gray-900 mb-6 flex items-center gap-2">
-          <span className="text-4xl">⚡</span>
-          Quick Actions
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Browse Events Card */}
-          <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-blue-200 transition-all ${
-            canParticipate 
-              ? 'hover:scale-105 hover:shadow-purple-300 hover:shadow-2xl cursor-pointer group' 
-              : 'opacity-50 cursor-not-allowed'
-          }`}>
-            <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
-              📅
-            </div>
-            <h3 className="text-2xl font-black text-gray-900 mb-2">Browse Events</h3>
-            <p className="text-gray-600 font-medium">
-              {canParticipate 
-                ? "Find awesome game jams to join!" 
-                : "Complete profile & get approval first"}
-            </p>
-            {!canParticipate && (
-              <div className="mt-3 text-xs font-bold text-red-600">
-                🔒 Locked
+        {canParticipate && <>
+          <h3 className="text-3xl font-black text-gray-900 mb-6 flex items-center gap-2">
+            <span className="text-4xl">⚡</span>
+            Quick Actions
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Browse Events Card */}
+            <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-blue-200 transition-all ${
+              canParticipate 
+                ? 'hover:scale-105 hover:shadow-purple-300 hover:shadow-2xl cursor-pointer group' 
+                : 'opacity-50 cursor-not-allowed'
+            }`}>
+              <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
+                📅
               </div>
-            )}
-          </div>
+              <h3 className="text-2xl font-black text-gray-900 mb-2">Browse Events</h3>
+              <p className="text-gray-600 font-medium">
+                {canParticipate 
+                  ? "Find awesome game jams to join!" 
+                  : "Complete profile & get approval first"}
+              </p>
+              {!canParticipate && (
+                <div className="mt-3 text-xs font-bold text-red-600">
+                  🔒 Locked
+                </div>
+              )}
+            </div>
 
-          {/* My Teams Card */}
-          <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-purple-200 transition-all ${
-            canParticipate 
-              ? 'hover:scale-105 hover:shadow-pink-300 hover:shadow-2xl cursor-pointer group' 
-              : 'opacity-50 cursor-not-allowed'
-          }`}>
-            <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
-              👥
-            </div>
-            <h3 className="text-2xl font-black text-gray-900 mb-2">My Teams</h3>
-            <p className="text-gray-600 font-medium">
-              {canParticipate 
-                ? "Check out your awesome teams!" 
-                : "Complete profile & get approval first"}
-            </p>
-            {!canParticipate && (
-              <div className="mt-3 text-xs font-bold text-red-600">
-                🔒 Locked
+            {/* My Teams Card */}
+            <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-purple-200 transition-all ${
+              canParticipate 
+                ? 'hover:scale-105 hover:shadow-pink-300 hover:shadow-2xl cursor-pointer group' 
+                : 'opacity-50 cursor-not-allowed'
+            }`}>
+              <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
+                👥
               </div>
-            )}
-          </div>
+              <h3 className="text-2xl font-black text-gray-900 mb-2">My Teams</h3>
+              <p className="text-gray-600 font-medium">
+                {canParticipate 
+                  ? "Check out your awesome teams!" 
+                  : "Complete profile & get approval first"}
+              </p>
+              {!canParticipate && (
+                <div className="mt-3 text-xs font-bold text-red-600">
+                  🔒 Locked
+                </div>
+              )}
+            </div>
 
-          {/* Submissions Card */}
-          <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-green-200 transition-all ${
-            canParticipate 
-              ? 'hover:scale-105 hover:shadow-blue-300 hover:shadow-2xl cursor-pointer group' 
-              : 'opacity-50 cursor-not-allowed'
-          }`}>
-            <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
-              🎮
-            </div>
-            <h3 className="text-2xl font-black text-gray-900 mb-2">Submissions</h3>
-            <p className="text-gray-600 font-medium">
-              {canParticipate 
-                ? "View your epic game creations!" 
-                : "Complete profile & get approval first"}
-            </p>
-            {!canParticipate && (
-              <div className="mt-3 text-xs font-bold text-red-600">
-                🔒 Locked
+            {/* Submissions Card */}
+            <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-green-200 transition-all ${
+              canParticipate 
+                ? 'hover:scale-105 hover:shadow-blue-300 hover:shadow-2xl cursor-pointer group' 
+                : 'opacity-50 cursor-not-allowed'
+            }`}>
+              <div className={`text-6xl mb-4 ${canParticipate ? 'group-hover:animate-bounce' : ''}`}>
+                🎮
               </div>
-            )}
+              <h3 className="text-2xl font-black text-gray-900 mb-2">Submissions</h3>
+              <p className="text-gray-600 font-medium">
+                {canParticipate 
+                  ? "View your epic game creations!" 
+                  : "Complete profile & get approval first"}
+              </p>
+              {!canParticipate && (
+                <div className="mt-3 text-xs font-bold text-red-600">
+                  🔒 Locked
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </>}
       </main>
     </div>
   );

@@ -1,3 +1,5 @@
+// /api/users/me/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { withUserAuth, AuthenticatedRequest } from '@/lib/middleware/userAuth';
 

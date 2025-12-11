@@ -113,9 +113,10 @@ export default function SignInForm() {
           </div>
 
           <div className="space-y-4">
-            <button onClick={() => handleMethodSelect("email")}
-              className="w-full p-6 rounded-2xl border-4 border-blue-200 bg-linear-to-r from-blue-50 to-cyan-50 hover:from-blue-100 
-              hover:to-cyan-100 transition-all hover:scale-105 hover:shadow-xl">
+            <button
+              onClick={() => handleMethodSelect("email")}
+              className="w-full p-6 rounded-2xl border-4 border-blue-200 bg-linear-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-all hover:scale-105 hover:shadow-xl"
+            >
               <div className="flex items-center gap-4">
                 <div className="text-4xl">📧</div>
                 <div className="text-left">
@@ -125,9 +126,10 @@ export default function SignInForm() {
               </div>
             </button>
 
-            <button onClick={() => handleMethodSelect("whatsapp")}
-              className="w-full p-6 rounded-2xl border-4 border-green-200 bg-linear-to-r from-green-50 to-emerald-50 
-              hover:from-green-100 hover:to-emerald-100 transition-all hover:scale-105 hover:shadow-xl">
+            <button
+              onClick={() => handleMethodSelect("whatsapp")}
+              className="w-full p-6 rounded-2xl border-4 border-green-200 bg-linear-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 transition-all hover:scale-105 hover:shadow-xl"
+            >
               <div className="flex items-center gap-4">
                 <div className="text-4xl">💬</div>
                 <div className="text-left">
@@ -154,10 +156,14 @@ export default function SignInForm() {
 
           <form onSubmit={handleSendOTP} className="space-y-4">
             {authMethod === "email" ? (
-              <Input label="Your Email 📧" type="email"
-                value={email} onChange={(e) => setEmail(e.target.value)}
+              <Input
+                label="Your Email 📧"
+                type="email"
+                value={email.toLowerCase()}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
                 placeholder="you@example.com"
-                icon={<span>✉️</span>}/>
+                icon={<span>✉️</span>}
+              />
             ) : (
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -168,10 +174,13 @@ export default function SignInForm() {
                     value={selectedCountry.key}
                     onChange={handleCountryChange}
                   />
-                  <Input type="tel"
-                    value={phone} onChange={(e) => setPhone(e.target.value)}
+                  <Input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="501234567"
-                    className="flex-1"/>
+                    className="flex-1"
+                  />
                 </div>
               </div>
             )}
@@ -183,9 +192,12 @@ export default function SignInForm() {
             )}
 
             <div className="flex gap-3 pt-4">
-              <Button type="button" variant="outline"
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => setStep("method")}
-                className="flex-1">
+                className="flex-1"
+              >
                 ← Back
               </Button>
               <Button type="submit" isLoading={loading} className="flex-1">
@@ -213,11 +225,15 @@ export default function SignInForm() {
           </div>
 
           <form onSubmit={handleVerifyOTP} className="space-y-4">
-            <Input label="Enter the 6-digit code 🎯" type="text"
-              value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            <Input
+              label="Enter the 6-digit code 🎯"
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
               placeholder="000000"
               maxLength={6}
-              className="text-center text-3xl tracking-widest font-mono"/>
+              className="text-center text-3xl tracking-widest font-mono"
+            />
 
             {(localError || error) && (
               <div className="p-4 rounded-xl bg-red-50 border-2 border-red-200">
@@ -226,16 +242,23 @@ export default function SignInForm() {
             )}
 
             <div className="flex gap-3 pt-4">
-              <Button type="button" variant="outline"
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setStep("input");
                   setOtp("");
                 }}
-                className="flex-1">
+                className="flex-1"
+              >
                 ← Back
               </Button>
-              <Button type="submit" isLoading={loading} disabled={otp.length !== 6}
-                className="flex-1">
+              <Button
+                type="submit"
+                isLoading={loading}
+                disabled={otp.length !== 6}
+                className="flex-1"
+              >
                 Sign In →
               </Button>
             </div>

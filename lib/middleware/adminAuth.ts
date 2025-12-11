@@ -7,10 +7,6 @@ export interface AuthenticatedAdminRequest extends NextRequest {
   admin?: any;
 }
 
-/**
- * Middleware to authenticate admin requests
- * Checks for valid admin session and loads admin from database
- */
 export async function withAdminAuth(
   request: NextRequest,
   handler: (request: AuthenticatedAdminRequest) => Promise<NextResponse>

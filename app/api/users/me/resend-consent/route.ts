@@ -1,3 +1,5 @@
+// /api/users/me/resend-consent/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getUserSession } from '@/lib/auth/session';

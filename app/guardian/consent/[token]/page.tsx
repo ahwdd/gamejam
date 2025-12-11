@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { uploadGuardianDocument } from "@/utils/uploadGuardianDocs";
+import { generateConsentFormPDF, ConsentFormData } from "@/utils/generateConsentPDF";
 
 export default function GuardianConsentPage() {
   const params = useParams();
@@ -18,6 +20,10 @@ export default function GuardianConsentPage() {
   const [guardian, setGuardian] = useState<any>(null);
   const [student, setStudent] = useState<any>(null);
 
+  // Step tracking
+  const [pdfDownloaded, setPdfDownloaded] = useState(false);
+  const [currentStep, setCurrentStep] = useState<'download' | 'upload'>('download');
+
   // Form fields
   const [nationalID, setNationalID] = useState("");
   const [willAttend, setWillAttend] = useState(false);
@@ -26,156 +32,69 @@ export default function GuardianConsentPage() {
   // File uploads
   const [consentDoc, setConsentDoc] = useState<File | null>(null);
   const [nationalIDImage, setNationalIDImage] = useState<File | null>(null);
-
-  // Signature
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [signatureData, setSignatureData] = useState("");
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   useEffect(() => {
     fetchConsentForm();
   }, [token]);
 
-const fetchConsentForm = async () => {
-  if (!token) {
-    setError("Invalid consent link (missing token).");
-    setLoading(false);
-    return;
-  }
-
-  console.log("[client] fetching consent form for token:", token);
-
-  try {
-    const encoded = encodeURIComponent(token);
-    const response = await fetch(`/api/guardian/consent/${encoded}`, {
-      headers: { Accept: "application/json" },
-    });
-
-    // parse JSON even if response not ok to get server message
-    const data = await response.json().catch(() => null);
-
-    if (!response.ok) {
-      const serverMsg = data?.error || data?.message || response.statusText;
-      throw new Error(serverMsg || "Invalid consent link");
+  const fetchConsentForm = async () => {
+    if (!token) {
+      setError("Invalid consent link (missing token).");
+      setLoading(false);
+      return;
     }
 
-    if (!data?.success) {
-      throw new Error(data?.error || "Invalid or expired consent link");
-    }
+    console.log("[client] fetching consent form for token:", token);
 
-    setGuardian(data.guardian);
-    setStudent(data.student);
-  } catch (err) {
-    console.error("[client] fetchConsentForm error:", err);
-    setError(err instanceof Error ? err.message : "Failed to load consent form");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-  // Signature canvas functions
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    canvas.width = canvas.offsetWidth;
-    canvas.height = 200;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.strokeStyle = "#000";
-      ctx.lineWidth = 2;
-      ctx.lineCap = "round";
-    }
-  }, []);
-
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    setIsDrawing(true);
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let x, y;
-    if ("touches" in e) {
-      x = e.touches[0].clientX - rect.left;
-      y = e.touches[0].clientY - rect.top;
-    } else {
-      x = e.clientX - rect.left;
-      y = e.clientY - rect.top;
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  };
-
-  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let x, y;
-    if ("touches" in e) {
-      x = e.touches[0].clientX - rect.left;
-      y = e.touches[0].clientY - rect.top;
-    } else {
-      x = e.clientX - rect.left;
-      y = e.clientY - rect.top;
-    }
-
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  };
-
-  const stopDrawing = () => {
-    setIsDrawing(false);
-    const canvas = canvasRef.current;
-    if (canvas) {
-      setSignatureData(canvas.toDataURL());
-    }
-  };
-
-  const clearSignature = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      setSignatureData("");
-    }
-  };
-
-  const handleFileUpload = async (file: File, fileType: string) => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("guardianId", guardian.id);
-      formData.append("fileType", fileType);
-
-      const response = await fetch("/api/guardian/upload", {
-        method: "POST",
-        body: formData,
+      const encoded = encodeURIComponent(token);
+      const response = await fetch(`/api/guardian/consent/${encoded}`, {
+        headers: { Accept: "application/json" },
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-      if (!data.success) {
-        throw new Error(data.error);
+      if (!response.ok) {
+        const serverMsg = data?.error || data?.message || response.statusText;
+        throw new Error(serverMsg || "Invalid consent link");
       }
 
-      return data.fileUrl;
+      if (!data?.success) {
+        throw new Error(data?.error || "Invalid or expired consent link");
+      }
+
+      setGuardian(data.guardian);
+      setStudent(data.student);
     } catch (err) {
-      throw err;
+      console.error("[client] fetchConsentForm error:", err);
+      setError(err instanceof Error ? err.message : "Failed to load consent form");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Download PDF consent form
+  const handleDownloadPDF = () => {
+    if (!guardian || !student) return;
+
+    const formData: ConsentFormData = {
+      guardianName: `${guardian.firstName} ${guardian.lastName}`,
+      studentName: `${student.firstName} ${student.lastName}`,
+      studentSchool: student.school || "N/A",
+      studentGrade: student.grade || "N/A",
+      guardianEmail: guardian.email,
+      guardianPhone: `${guardian.phoneKey} ${guardian.phoneNumber}`,
+      relationshipToStudent: guardian.relationshipToStudent,
+    };
+
+    generateConsentFormPDF(formData);
+    
+    // Mark as downloaded and move to next step
+    setPdfDownloaded(true);
+    setTimeout(() => {
+      setCurrentStep('upload');
+    }, 1000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -187,25 +106,39 @@ const fetchConsentForm = async () => {
       return;
     }
 
-    if (!signatureData) {
-      setError("Please provide your signature");
+    if (!consentDoc) {
+      setError("Please upload the signed consent form");
       return;
     }
 
     setSubmitting(true);
+    setUploadingFiles(true);
 
     try {
       let consentDocUrl = "";
       let nationalIDImageUrl = "";
 
+      // Upload consent document
       if (consentDoc) {
-        consentDocUrl = await handleFileUpload(consentDoc, "consent");
+        const result = await uploadGuardianDocument(consentDoc, guardian.id, 'consent');
+        if (result.error) {
+          throw new Error(`Failed to upload consent document: ${result.error}`);
+        }
+        consentDocUrl = result.secure_url;
       }
 
+      // Upload national ID image (optional)
       if (nationalIDImage) {
-        nationalIDImageUrl = await handleFileUpload(nationalIDImage, "nationalID");
+        const result = await uploadGuardianDocument(nationalIDImage, guardian.id, 'nationalID');
+        if (result.error) {
+          throw new Error(`Failed to upload ID image: ${result.error}`);
+        }
+        nationalIDImageUrl = result.secure_url;
       }
 
+      setUploadingFiles(false);
+
+      // Submit to backend
       const encoded = encodeURIComponent(token);
       const response = await fetch(`/api/guardian/consent/${encoded}`, {
         method: "POST",
@@ -217,7 +150,7 @@ const fetchConsentForm = async () => {
           nationalID,
           willAttendEvent: willAttend,
           consentGiven,
-          signature: signatureData,
+          signature: consentDocUrl, // Use consent doc URL as signature proof
           consentDocumentURL: consentDocUrl,
           nationalIDImageURL: nationalIDImageUrl,
         }),
@@ -240,6 +173,7 @@ const fetchConsentForm = async () => {
       setError(err instanceof Error ? err.message : "Failed to submit consent");
     } finally {
       setSubmitting(false);
+      setUploadingFiles(false);
     }
   };
 
@@ -330,20 +264,36 @@ const fetchConsentForm = async () => {
           </p>
         </div>
 
+        {/* Progress Indicator */}
+        <div className="mb-8 flex items-center justify-center gap-4">
+          <div className={`flex items-center gap-2 ${currentStep === 'download' ? 'opacity-100' : 'opacity-50'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+              pdfDownloaded ? 'bg-green-500 text-white' : 'bg-purple-500 text-white'
+            }`}>
+              {pdfDownloaded ? '✓' : '1'}
+            </div>
+            <span className="font-bold text-gray-700">Download</span>
+          </div>
+          
+          <div className="w-12 h-1 bg-gray-300 rounded"></div>
+          
+          <div className={`flex items-center gap-2 ${currentStep === 'upload' ? 'opacity-100' : 'opacity-50'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+              currentStep === 'upload' ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600'
+            }`}>
+              2
+            </div>
+            <span className="font-bold text-gray-700">Upload</span>
+          </div>
+        </div>
+
         {/* Student Info */}
         {student && (
-          <div className="mb-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border-4 border-blue-200">
+          <div className="mb-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border-4 border-blue-200">
             <h2 className="text-xl font-black text-gray-900 mb-4">Student Information:</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
               <div>
                 <span className="font-bold">Name:</span> {student.firstName} {student.lastName}
-              </div>
-              <div>
-                <span className="font-bold">Email:</span> {student.email || "N/A"}
-              </div>
-              <div>
-                <span className="font-bold">Phone:</span>{" "}
-                {student.phoneKey} {student.phoneNumber || "N/A"}
               </div>
               <div>
                 <span className="font-bold">School:</span> {student.school}
@@ -358,124 +308,157 @@ const fetchConsentForm = async () => {
           </div>
         )}
 
-        {/* Consent Form */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-purple-200">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Consent Statement */}
-            <div className="p-6 rounded-2xl bg-purple-50 border-2 border-purple-200">
-              <h3 className="font-black text-purple-900 mb-3">Parental Consent Statement</h3>
-              <p className="text-purple-800 text-sm leading-relaxed">
-                I, {guardian?.firstName} {guardian?.lastName}, give permission for my child,{" "}
-                {student?.firstName} {student?.lastName}, to participate in the Student Hub Game Jam event.
-                I understand that this event involves game development activities and may include
-                working in teams, using computers, and presenting projects.
-              </p>
-            </div>
-
-            {/* National ID */}
-            <Input
-              label="National ID Number (Optional)"
-              type="text"
-              value={nationalID}
-              onChange={(e) => setNationalID(e.target.value)}
-              placeholder="Enter national ID"
-            />
-
-            {/* File Uploads */}
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Upload Consent Document (Optional)
-                </label>
-                <input
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => setConsentDoc(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition"
-                />
-                <p className="text-xs text-gray-500 mt-1">PDF or Image (max 5MB)</p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Upload National ID Image (Optional)
-                </label>
-                <input
-                  type="file"
-                  accept=".jpg,.jpeg,.png"
-                  onChange={(e) => setNationalIDImage(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition"
-                />
-                <p className="text-xs text-gray-500 mt-1">Image only (max 5MB)</p>
+        {/* Step 1: Download PDF */}
+        {currentStep === 'download' && (
+          <div className="mb-6 bg-yellow-50 rounded-2xl shadow-xl p-6 border-4 border-yellow-300">
+            <div className="flex items-start gap-4">
+              <span className="text-4xl">📄</span>
+              <div className="flex-1">
+                <h3 className="font-black text-yellow-900 mb-2">Step 1: Download & Sign Consent Form</h3>
+                <p className="text-yellow-800 text-sm mb-4">
+                  Download the consent form, print it, and sign it physically. Then proceed to the next step to upload it.
+                </p>
+                <Button 
+                  onClick={handleDownloadPDF} 
+                  variant="secondary" 
+                  size="lg"
+                  disabled={pdfDownloaded}
+                >
+                  {pdfDownloaded ? '✓ Downloaded' : '📥 Download Consent Form PDF'}
+                </Button>
+                
+                {pdfDownloaded && (
+                  <div className="mt-4 p-3 bg-green-100 border-2 border-green-400 rounded-lg">
+                    <p className="text-green-800 font-bold text-sm">
+                      ✓ Form downloaded! Please print, sign it, and proceed to Step 2.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Signature */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                Digital Signature *
+        {/* Step 2: Upload Form */}
+        {currentStep === 'upload' && (
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-purple-200">
+            <h3 className="text-2xl font-black text-gray-900 mb-6 text-center">
+              Step 2: Upload Signed Consent Form
+            </h3>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Consent Statement */}
+              <div className="p-6 rounded-2xl bg-purple-50 border-2 border-purple-200">
+                <h3 className="font-black text-purple-900 mb-3">Parental Consent Statement</h3>
+                <p className="text-purple-800 text-sm leading-relaxed">
+                  I, {guardian?.firstName} {guardian?.lastName}, give permission for my child,{" "}
+                  {student?.firstName} {student?.lastName}, to participate in the Student Hub Game Jam event.
+                </p>
+              </div>
+
+              {/* National ID */}
+              <Input
+                label="National ID Number (Optional)"
+                type="text"
+                value={nationalID}
+                onChange={(e) => setNationalID(e.target.value)}
+                placeholder="Enter national ID"
+              />
+
+              {/* File Uploads */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Upload Signed Consent Form * (Required)
+                  </label>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => setConsentDoc(e.target.files?.[0] || null)}
+                    required
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    PDF or Image of the signed consent form (max 5MB)
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Upload National ID Image (Optional)
+                  </label>
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    onChange={(e) => setNationalIDImage(e.target.files?.[0] || null)}
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Image only (max 5MB)</p>
+                </div>
+              </div>
+
+              {/* Will Attend */}
+              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:bg-gray-50">
+                <input
+                  type="checkbox"
+                  checked={willAttend}
+                  onChange={(e) => setWillAttend(e.target.checked)}
+                  className="mt-1"
+                />
+                <span className="text-sm text-gray-700">
+                  I plan to attend the event with my child
+                </span>
               </label>
-              <div className="border-2 border-gray-300 rounded-xl overflow-hidden">
-                <canvas
-                  ref={canvasRef}
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                  className="w-full cursor-crosshair bg-white"
-                  style={{ touchAction: "none" }}
+
+              {/* Consent Checkbox */}
+              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-purple-300 bg-purple-50 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={consentGiven}
+                  onChange={(e) => setConsentGiven(e.target.checked)}
+                  className="mt-1"
+                  required
                 />
+                <span className="text-sm font-bold text-purple-900">
+                  I consent to my child's participation in the Student Hub Game Jam event *
+                </span>
+              </label>
+
+              {error && (
+                <div className="p-4 rounded-xl bg-red-50 border-2 border-red-200">
+                  <p className="text-red-600 font-medium">{error}</p>
+                </div>
+              )}
+
+              {uploadingFiles && (
+                <div className="p-4 rounded-xl bg-blue-50 border-2 border-blue-200">
+                  <p className="text-blue-800 font-medium">📤 Uploading documents...</p>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setCurrentStep('download')}
+                  className="flex-1"
+                  disabled={uploadingFiles || submitting}
+                >
+                  ← Back to Download
+                </Button>
+                <Button 
+                  type="submit" 
+                  isLoading={submitting} 
+                  className="flex-1" 
+                  size="lg"
+                  disabled={uploadingFiles}
+                >
+                  {uploadingFiles ? "Uploading..." : "Submit Consent Form"}
+                </Button>
               </div>
-              <button
-                type="button"
-                onClick={clearSignature}
-                className="mt-2 text-sm text-purple-600 hover:text-purple-800 font-medium"
-              >
-                Clear Signature
-              </button>
-            </div>
-
-            {/* Will Attend */}
-            <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:bg-gray-50">
-              <input
-                type="checkbox"
-                checked={willAttend}
-                onChange={(e) => setWillAttend(e.target.checked)}
-                className="mt-1"
-              />
-              <span className="text-sm text-gray-700">
-                I plan to attend the event with my child
-              </span>
-            </label>
-
-            {/* Consent Checkbox */}
-            <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-purple-300 bg-purple-50 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={consentGiven}
-                onChange={(e) => setConsentGiven(e.target.checked)}
-                className="mt-1"
-                required
-              />
-              <span className="text-sm font-bold text-purple-900">
-                I consent to my child's participation in the Student Hub Game Jam event *
-              </span>
-            </label>
-
-            {error && (
-              <div className="p-4 rounded-xl bg-red-50 border-2 border-red-200">
-                <p className="text-red-600 font-medium">{error}</p>
-              </div>
-            )}
-
-            <Button type="submit" isLoading={submitting} className="w-full" size="lg">
-              Submit Consent Form
-            </Button>
-          </form>
-        </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

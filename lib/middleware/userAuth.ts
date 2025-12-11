@@ -7,10 +7,6 @@ export interface AuthenticatedRequest extends NextRequest {
   user?: any;
 }
 
-/**
- * Middleware to authenticate user requests
- * Checks for valid user session and loads user from database
- */
 export async function withUserAuth(
   request: NextRequest,
   handler: (request: AuthenticatedRequest) => Promise<NextResponse>

@@ -1,3 +1,4 @@
+// /api/users/me/check-unique/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { withUserAuth, AuthenticatedRequest } from '@/lib/middleware/userAuth';
 import { prisma } from '@/lib/prisma';

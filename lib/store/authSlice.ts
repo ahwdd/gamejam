@@ -44,12 +44,16 @@ const initialState: AuthState = {
 
 const isAlreadyRegisteredError = (error: string): boolean => {
   const lowerError = error.toLowerCase();
+  console.log('lowerError :>> ', lowerError);
   return (
     lowerError.includes('already registered') ||
     lowerError.includes('already exists') ||
     lowerError.includes('user already exists') ||
     lowerError.includes('email already registered') ||
-    lowerError.includes('phone already registered')
+    lowerError.includes('phone already registered') ||
+    lowerError.includes('the email has already been taken') ||
+    lowerError.includes('email has already been taken') ||
+    lowerError.includes('email is already in use')
   );
 };
 
@@ -160,10 +164,10 @@ export const verifyWhatsAppRegisterOTP = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.error || 'Invalid OTP');
+        return rejectWithValue(data.error || data.message || 'Invalid OTP');
       }
 
-      return data.user;
+      return data.user || data.data?.user;
     } catch (error) {
       console.log('error :>> ', error);
       return rejectWithValue('Network error');
@@ -178,48 +182,22 @@ export const sendEmailRegisterOTP = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HUB_BASE_URL}/api/auth/register/email/send-otp`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            email,
-            type: 'email',
-          }),
-        }
-      );
+      const response = await fetch('/api/auth/register/email/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      });
 
       const data = await response.json();
-
-      if (!response.ok && data.message && isAlreadyRegisteredError(data.message)) {
-        const loginResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_HUB_BASE_URL}/api/auth/login/email/send-otp`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email,
-              type: 'email',
-            }),
-          }
-        );
-
-        const loginData = await loginResponse.json();
-        
-        if (!loginResponse.ok) {
-          return rejectWithValue(loginData.message || 'Failed to send OTP');
-        }
-
-        return { ...loginData, switchedToLogin: true };
-      }
 
       if (!response.ok) {
         return rejectWithValue(data.message || 'Failed to send OTP');
       }
 
-      return { ...data, switchedToLogin: false };
+      return data;
     } catch (error) {
       console.log('error :>> ', error);
       return rejectWithValue('Network error');
@@ -251,10 +229,10 @@ export const verifyEmailRegisterOTP = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.error || 'Invalid OTP');
+        return rejectWithValue(data.error || data.message || 'Invalid OTP');
       }
 
-      return data.user;
+      return data.user || data.data?.user;
     } catch (error) {
       console.log('error :>> ', error);
       return rejectWithValue('Network error');
@@ -313,10 +291,10 @@ export const verifyWhatsAppLoginOTP = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.error || 'Invalid OTP');
+        return rejectWithValue(data.error || data.message || 'Invalid OTP');
       }
 
-      return data.user;
+      return data.user || data.data?.user;
     } catch (error) {
       console.log('error :>> ', error);
       return rejectWithValue('Network error');
@@ -371,10 +349,10 @@ export const verifyEmailLoginOTP = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.error || 'Invalid OTP');
+        return rejectWithValue(data.error || data.message || 'Invalid OTP');
       }
 
-      return data.user;
+      return data.user || data.data?.user;
     } catch (error) {
       console.log('error :>> ', error);
       return rejectWithValue('Network error');
