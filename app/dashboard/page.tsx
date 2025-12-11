@@ -195,23 +195,6 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Approval Success Badge */}
-        {canParticipate && (
-          <div className="bg-green-50 border-4 border-green-400 rounded-3xl p-6 mb-8 shadow-2xl">
-            <div className="flex items-start gap-4">
-              <span className="text-5xl">✅</span>
-              <div className="flex-1">
-                <h3 className="text-2xl font-black text-green-800 mb-2">
-                  You're All Set!
-                </h3>
-                <p className="text-green-700 font-medium">
-                  Your account is fully activated. You can now join events, create teams, and participate in game jams! 🎉
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Welcome Section */}
         {user?.profileComplete && <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8 border-4 border-purple-200">
           <div className="flex items-start justify-between flex-wrap gap-4">
