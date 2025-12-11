@@ -9,12 +9,12 @@ const consentSchema = z.object({
   consentGiven: z.boolean().refine((val) => val === true, {
     message: 'Consent must be given',
   }),
-  signature: z.string().min(1, 'Signature is required'),
+  consentDocumentURL: z.string().min(1, 'Consent document is required'),
+  nationalIDImageURL: z.string().optional(),
 });
 
 async function getHandler(request: NextRequest, paramsPromise: any) {
   try {
-    // paramsPromise may be a Promise (Next.js App Router), so await it
     const params = await paramsPromise;
     const rawToken = String(params?.token ?? '').trim();
 
@@ -114,7 +114,9 @@ async function postHandler(request: NextRequest, paramsPromise: any) {
         willAttendEvent: validatedData.willAttendEvent,
         consentGiven: true,
         consentDate: new Date(),
-        signatureURL: validatedData.signature, // Base64 signature or URL
+        consentDocumentURL: validatedData.consentDocumentURL,
+        nationalIDImageURL: validatedData.nationalIDImageURL,
+        signatureURL: validatedData.consentDocumentURL, // Signed PDF contains physical signature
       },
     });
 

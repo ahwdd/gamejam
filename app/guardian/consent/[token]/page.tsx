@@ -107,7 +107,7 @@ export default function GuardianConsentPage() {
     }
 
     if (!consentDoc) {
-      setError("Please upload the signed consent form");
+      setError("Please upload the signed consent form PDF");
       return;
     }
 
@@ -118,7 +118,7 @@ export default function GuardianConsentPage() {
       let consentDocUrl = "";
       let nationalIDImageUrl = "";
 
-      // Upload consent document
+      // Upload consent document (contains physical signature)
       if (consentDoc) {
         const result = await uploadGuardianDocument(consentDoc, guardian.id, 'consent');
         if (result.error) {
@@ -150,7 +150,6 @@ export default function GuardianConsentPage() {
           nationalID,
           willAttendEvent: willAttend,
           consentGiven,
-          signature: consentDocUrl, // Use consent doc URL as signature proof
           consentDocumentURL: consentDocUrl,
           nationalIDImageURL: nationalIDImageUrl,
         }),

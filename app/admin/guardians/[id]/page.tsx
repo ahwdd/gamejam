@@ -1,3 +1,4 @@
+// /admin/guardians/[id]/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,6 +12,7 @@ export default function GuardianDetailsPage() {
   const guardianId = params.id as string;
 
   const [guardian, setGuardian] = useState<any>(null);
+  const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
@@ -22,6 +24,9 @@ export default function GuardianDetailsPage() {
   // Rejection form
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
+
+  // Document viewer
+  const [viewingDoc, setViewingDoc] = useState<string | null>(null);
 
   useEffect(() => {
     fetchGuardian();
@@ -36,6 +41,16 @@ export default function GuardianDetailsPage() {
 
       if (data.success) {
         setGuardian(data.guardian);
+        
+        // Fetch all students associated with this guardian
+        if (data.guardian.additionalStudents && data.guardian.additionalStudents.length > 0) {
+          const studentIds = [data.guardian.userId, ...data.guardian.additionalStudents];
+          const studentsData = await fetchStudents(studentIds);
+          setStudents(studentsData);
+        } else {
+          // Only one student
+          setStudents([data.guardian.user]);
+        }
       } else {
         setError(data.error || "Failed to load guardian");
       }
@@ -43,6 +58,21 @@ export default function GuardianDetailsPage() {
       setError("Failed to load guardian");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStudents = async (studentIds: string[]) => {
+    try {
+      const responses = await Promise.all(
+        studentIds.map(id => 
+          fetch(`/api/admin/users/${id}`, { credentials: "include" })
+            .then(res => res.json())
+        )
+      );
+      return responses.filter(r => r.success).map(r => r.user);
+    } catch (err) {
+      console.error("Failed to fetch students:", err);
+      return [];
     }
   };
 
@@ -66,7 +96,7 @@ export default function GuardianDetailsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Guardian approved successfully!");
+        alert("Guardian approved successfully! All associated students can now participate.");
         fetchGuardian();
         setShowApproveForm(false);
         setApprovalNote("");
@@ -100,7 +130,7 @@ export default function GuardianDetailsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Guardian rejected. User will be notified.");
+        alert("Guardian rejected. All associated students will be notified.");
         fetchGuardian();
         setShowRejectForm(false);
         setRejectionReason("");
@@ -112,6 +142,13 @@ export default function GuardianDetailsPage() {
     } finally {
       setActionLoading(false);
     }
+  };
+
+  const openDocument = (url: string) => {
+    // For Cloudinary URLs, ensure we're using the correct format
+    // Remove any duplicate paths and ensure proper access
+    const cleanUrl = url.replace(/\/guardian-documents\/[^/]+\/guardian-documents/, '/guardian-documents');
+    setViewingDoc(cleanUrl);
   };
 
   if (loading) {
@@ -146,6 +183,60 @@ export default function GuardianDetailsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Document Viewer Modal */}
+      {viewingDoc && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-slate-700">
+              <h3 className="text-xl font-black text-white">Document Viewer</h3>
+              <button
+                onClick={() => setViewingDoc(null)}
+                className="text-slate-400 hover:text-white text-2xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex-1 overflow-auto p-4">
+              {viewingDoc.endsWith('.pdf') ? (
+                <iframe
+                  src={viewingDoc}
+                  className="w-full h-[70vh] rounded-lg"
+                  title="Document Viewer"
+                />
+              ) : (
+                <img
+                  src={viewingDoc}
+                  alt="Document"
+                  className="w-full h-auto rounded-lg"
+                />
+              )}
+            </div>
+            <div className="p-4 border-t border-slate-700 flex justify-between items-center">
+              <div className="flex gap-3">
+                <a
+                  href={viewingDoc}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-violet-400 hover:text-violet-300 font-bold"
+                >
+                  🔗 Open in New Tab
+                </a>
+                <a
+                  href={viewingDoc}
+                  download
+                  className="text-green-400 hover:text-green-300 font-bold"
+                >
+                  💾 Download
+                </a>
+              </div>
+              <Button onClick={() => setViewingDoc(null)} variant="outline">
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -215,9 +306,19 @@ export default function GuardianDetailsPage() {
       {showApproveForm && (
         <div className="bg-green-500/10 rounded-2xl p-6 border-2 border-green-500">
           <h3 className="text-xl font-black text-white mb-4">
-            Approve Guardian
+            Approve Guardian for {students.length} Student{students.length > 1 ? 's' : ''}
           </h3>
           <div className="space-y-4">
+            <div className="bg-slate-800/50 rounded-lg p-4">
+              <p className="text-slate-300 text-sm mb-2">This will approve consent for:</p>
+              <ul className="list-disc list-inside text-white">
+                {students.map(student => (
+                  <li key={student.id}>
+                    {student.firstName} {student.lastName} ({student.school || 'N/A'})
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div>
               <label className="block text-sm font-bold text-slate-300 mb-2">
                 Approval Note (Optional)
@@ -270,7 +371,7 @@ export default function GuardianDetailsPage() {
                 required
               />
               <p className="text-xs text-slate-400 mt-1">
-                This message will be shown to the user. Be clear and helpful.
+                This message will be shown to all associated students. Be clear and helpful.
               </p>
             </div>
             <div className="flex gap-2">
@@ -293,48 +394,60 @@ export default function GuardianDetailsPage() {
         </div>
       )}
 
-      {/* Student Information */}
+      {/* Associated Students */}
       <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-black text-white">
-            Student Information
-          </h2>
-          <Link
-            href={`/admin/users/${guardian.user.id}`}
-            className="text-violet-400 hover:text-violet-300 font-bold text-sm"
-          >
-            View User Profile →
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="text-sm font-bold text-slate-400">Name</label>
-            <p className="text-white font-bold mt-1">
-              {guardian.user.firstName} {guardian.user.lastName}
-            </p>
-          </div>
-          <div>
-            <label className="text-sm font-bold text-slate-400">School</label>
-            <p className="text-white font-bold mt-1">
-              {guardian.user.school || "N/A"}
-            </p>
-          </div>
-          <div>
-            <label className="text-sm font-bold text-slate-400">Grade</label>
-            <p className="text-white font-bold mt-1">
-              {guardian.user.grade || "N/A"}
-            </p>
-          </div>
-          <div>
-            <label className="text-sm font-bold text-slate-400">
-              Date of Birth
-            </label>
-            <p className="text-white font-bold mt-1">
-              {guardian.user.dateOfBirth
-                ? new Date(guardian.user.dateOfBirth).toLocaleDateString()
-                : "N/A"}
-            </p>
-          </div>
+        <h2 className="text-2xl font-black text-white mb-6">
+          Associated Students ({students.length})
+        </h2>
+        <div className="space-y-4">
+          {students.map((student, index) => (
+            <div key={student.id} className="bg-slate-900 rounded-xl p-4 border border-slate-700">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="text-lg font-black text-white">
+                    {index + 1}. {student.firstName} {student.lastName}
+                  </h3>
+                  <p className="text-sm text-slate-400">ID: {student.id}</p>
+                </div>
+                <Link
+                  href={`/admin/users/${student.id}`}
+                  className="text-violet-400 hover:text-violet-300 font-bold text-sm"
+                >
+                  View Profile →
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                <div>
+                  <span className="text-slate-400">School:</span>
+                  <p className="text-white font-bold">{student.school || "N/A"}</p>
+                </div>
+                <div>
+                  <span className="text-slate-400">Grade:</span>
+                  <p className="text-white font-bold">{student.grade || "N/A"}</p>
+                </div>
+                <div>
+                  <span className="text-slate-400">DOB:</span>
+                  <p className="text-white font-bold">
+                    {student.dateOfBirth
+                      ? new Date(student.dateOfBirth).toLocaleDateString()
+                      : "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-slate-400">Status:</span>
+                  <p className={`font-bold ${
+                    student.guardianApprovalStatus === 'approved' 
+                      ? 'text-green-400' 
+                      : student.guardianApprovalStatus === 'rejected'
+                      ? 'text-red-400'
+                      : 'text-orange-400'
+                  }`}>
+                    {student.guardianApprovalStatus || 'pending'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -383,7 +496,63 @@ export default function GuardianDetailsPage() {
         </div>
       </div>
 
-      {/* Consent Information */}
+      {/* Uploaded Documents */}
+      {(guardian.consentDocumentURL || guardian.nationalIDImageURL || guardian.signatureURL) && (
+        <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+          <h2 className="text-2xl font-black text-white mb-6">
+            Uploaded Documents
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {guardian.consentDocumentURL && (
+              <button
+                onClick={() => openDocument(guardian.consentDocumentURL)}
+                className="p-6 rounded-xl bg-slate-900 border-2 border-slate-600 hover:border-violet-500 transition-all cursor-pointer text-left"
+              >
+                <div className="text-4xl mb-3">📄</div>
+                <div className="text-sm font-black text-white mb-1">
+                  Signed Consent Document
+                </div>
+                <div className="text-xs text-violet-400">
+                  Click to view/download →
+                </div>
+                <div className="text-xs text-slate-400 mt-2">
+                  Contains physical signature
+                </div>
+              </button>
+            )}
+            {guardian.nationalIDImageURL && (
+              <button
+                onClick={() => openDocument(guardian.nationalIDImageURL)}
+                className="p-6 rounded-xl bg-slate-900 border-2 border-slate-600 hover:border-violet-500 transition-all cursor-pointer text-left"
+              >
+                <div className="text-4xl mb-3">🪪</div>
+                <div className="text-sm font-black text-white mb-1">
+                  National ID
+                </div>
+                <div className="text-xs text-violet-400">
+                  Click to view →
+                </div>
+              </button>
+            )}
+            {guardian.signatureURL && guardian.signatureURL !== guardian.consentDocumentURL && (
+              <button
+                onClick={() => openDocument(guardian.signatureURL)}
+                className="p-6 rounded-xl bg-slate-900 border-2 border-slate-600 hover:border-violet-500 transition-all cursor-pointer text-left"
+              >
+                <div className="text-4xl mb-3">✍️</div>
+                <div className="text-sm font-black text-white mb-1">
+                  Additional Document
+                </div>
+                <div className="text-xs text-violet-400">
+                  Click to view →
+                </div>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Consent Details */}
       <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
         <h2 className="text-2xl font-black text-white mb-6">
           Consent Details
@@ -416,62 +585,6 @@ export default function GuardianDetailsPage() {
             </p>
           </div>
         </div>
-
-        {/* Documents */}
-        {(guardian.consentDocumentURL || guardian.nationalIDImageURL || guardian.signatureURL) && (
-          <div className="mt-6 pt-6 border-t border-slate-700">
-            <h3 className="text-lg font-black text-white mb-4">
-              Uploaded Documents
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {guardian.consentDocumentURL && (
-                <a
-                  href={guardian.consentDocumentURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-xl bg-slate-900 border border-slate-600 hover:border-violet-500 transition-colors"
-                >
-                  <div className="text-3xl mb-2">📄</div>
-                  <div className="text-sm font-bold text-white">
-                    Consent Document
-                  </div>
-                  <div className="text-xs text-violet-400 mt-1">
-                    View →
-                  </div>
-                </a>
-              )}
-              {guardian.nationalIDImageURL && (
-                <a
-                  href={guardian.nationalIDImageURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-xl bg-slate-900 border border-slate-600 hover:border-violet-500 transition-colors"
-                >
-                  <div className="text-3xl mb-2">🪪</div>
-                  <div className="text-sm font-bold text-white">
-                    National ID
-                  </div>
-                  <div className="text-xs text-violet-400 mt-1">
-                    View →
-                  </div>
-                </a>
-              )}
-              {guardian.signatureURL && (
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-600">
-                  <div className="text-3xl mb-2">✍️</div>
-                  <div className="text-sm font-bold text-white mb-2">
-                    Digital Signature
-                  </div>
-                  <img
-                    src={guardian.signatureURL}
-                    alt="Guardian signature"
-                    className="w-full h-16 object-contain bg-white rounded"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Timeline */}

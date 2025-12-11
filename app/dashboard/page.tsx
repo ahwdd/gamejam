@@ -8,11 +8,7 @@ import { useState, useEffect } from "react";
 
 export default function DashboardPage() {
   const { user, logout, refreshUser } = useAuth();
-  const [resendLoading, setResendLoading] = useState(false);
-  const [resendError, setResendError] = useState("");
-  const [resendSuccess, setResendSuccess] = useState(false);
-  const [canResend, setCanResend] = useState(true);
-  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [copied, setCopied] = useState(false);
   const [showGuardianForm, setShowGuardianForm] = useState(false);
 
   // Check if user can participate in events
@@ -24,71 +20,20 @@ export default function DashboardPage() {
     user?.profileComplete && 
     !user?.guardianApprovalStatus;
 
-  // Check if we can resend based on localStorage
-  useEffect(() => {
-    const lastResendTime = localStorage.getItem('lastConsentResend');
-    if (lastResendTime) {
-      const timePassed = Date.now() - parseInt(lastResendTime);
-      const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
-      
-      if (timePassed < oneHour) {
-        setCanResend(false);
-        setTimeRemaining(Math.ceil((oneHour - timePassed) / 1000 / 60)); // minutes remaining
-      }
-    }
-  }, []);
+  // Get consent link if available
+  const consentLink = user?.guardian?.consentToken 
+    ? `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/guardian/consent/${user.guardian.consentToken}`
+    : null;
 
-  // Update timer every minute
-  useEffect(() => {
-    if (!canResend && timeRemaining > 0) {
-      const interval = setInterval(() => {
-        const lastResendTime = localStorage.getItem('lastConsentResend');
-        if (lastResendTime) {
-          const timePassed = Date.now() - parseInt(lastResendTime);
-          const oneHour = 60 * 60 * 1000;
-          
-          if (timePassed >= oneHour) {
-            setCanResend(true);
-            setTimeRemaining(0);
-          } else {
-            setTimeRemaining(Math.ceil((oneHour - timePassed) / 1000 / 60));
-          }
-        }
-      }, 60000); // Update every minute
-
-      return () => clearInterval(interval);
-    }
-  }, [canResend, timeRemaining]);
-
-  const handleResendConsent = async () => {
-    setResendLoading(true);
-    setResendError("");
-    setResendSuccess(false);
-
+  const copyConsentLink = async () => {
+    if (!consentLink) return;
+    
     try {
-      const response = await fetch("/api/users/me/resend-consent", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || "Failed to resend consent");
-      }
-
-      // Set last resend time in localStorage
-      localStorage.setItem('lastConsentResend', Date.now().toString());
-      setCanResend(false);
-      setTimeRemaining(60); // 60 minutes
-      setResendSuccess(true);
-
-      // Clear success message after 5 seconds
-      setTimeout(() => setResendSuccess(false), 5000);
+      await navigator.clipboard.writeText(consentLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
     } catch (err) {
-      setResendError(err instanceof Error ? err.message : "Failed to resend consent");
-    } finally {
-      setResendLoading(false);
+      console.error('Failed to copy:', err);
     }
   };
 
@@ -182,7 +127,7 @@ export default function DashboardPage() {
         )}
 
         {/* Guardian Approval Pending Alert */}
-        {user?.isMinor && (user?.guardianApprovalStatus === "pending"|| !user?.guardianApprovalStatus) && !needsGuardianForm && (
+        {user?.isMinor && (user?.guardianApprovalStatus === "pending" || !user?.guardianApprovalStatus) && !needsGuardianForm && (
           <div className="bg-orange-50 border-4 border-orange-400 rounded-3xl p-6 mb-8 shadow-2xl">
             <div className="flex items-start gap-4">
               <span className="text-5xl">⏳</span>
@@ -197,41 +142,32 @@ export default function DashboardPage() {
                   Check back soon! We typically review forms within 24-48 hours. 🕐
                 </p>
 
-                {/* Resend Success Message */}
-                {resendSuccess && (
-                  <div className="mb-4 p-3 rounded-xl bg-green-100 border-2 border-green-400">
-                    <p className="text-green-800 font-bold text-sm">
-                      ✅ Consent form resent successfully!
+                {/* Copy Consent Link */}
+                {consentLink && (
+                  <div className="mt-4 p-4 rounded-xl bg-blue-50 border-2 border-blue-300">
+                    <p className="text-blue-900 font-bold text-sm mb-2">
+                      📋 Guardian Consent Link
                     </p>
+                    <p className="text-blue-700 text-xs mb-3">
+                      Share this link with your guardian to complete the consent form:
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={consentLink}
+                        readOnly
+                        className="flex-1 px-3 py-2 rounded-lg border-2 border-blue-200 bg-white text-sm font-mono text-blue-800"
+                      />
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={copyConsentLink}
+                      >
+                        {copied ? "✓ Copied!" : "📋 Copy"}
+                      </Button>
+                    </div>
                   </div>
                 )}
-
-                {/* Resend Error Message */}
-                {resendError && (
-                  <div className="mb-4 p-3 rounded-xl bg-red-100 border-2 border-red-400">
-                    <p className="text-red-800 font-bold text-sm">
-                      ❌ {resendError}
-                    </p>
-                  </div>
-                )}
-
-                {/* Resend Button */}
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    size="md"
-                    onClick={handleResendConsent}
-                    disabled={!canResend || resendLoading}
-                    isLoading={resendLoading}
-                  >
-                    {canResend ? "📤 Resend Consent Form" : `⏰ Wait ${timeRemaining} min`}
-                  </Button>
-                  {!canResend && (
-                    <span className="text-xs text-orange-600 font-medium">
-                      You can resend in {timeRemaining} minute{timeRemaining !== 1 ? 's' : ''}
-                    </span>
-                  )}
-                </div>
               </div>
             </div>
           </div>

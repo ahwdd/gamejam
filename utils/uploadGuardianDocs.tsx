@@ -10,7 +10,7 @@ interface UploadResponse {
 export async function uploadGuardianDocument(
   file: File,
   guardianId: string,
-  fileType: 'consent' | 'nationalID' | 'signature'
+  fileType: 'consent' | 'nationalID'
 ): Promise<UploadResponse> {
   if (!file) {
     return { secure_url: '', public_id: '', error: 'No file provided' };
@@ -25,7 +25,7 @@ export async function uploadGuardianDocument(
     };
   }
 
-  if (file.size > 5 * 1024 * 1024) {//(5MB max)
+  if (file.size > 5 * 1024 * 1024) {// (5MB max)
     return { 
       secure_url: '', 
       public_id: '', 
@@ -42,8 +42,7 @@ export async function uploadGuardianDocument(
   
   const uniqueId = uuidv4().substring(0, 8);
   const timestamp = Date.now();
-  const fileExtension = file.name.split('.').pop();
-  formData.append('public_id', `${folder}/${fileType}_${timestamp}_${uniqueId}`);
+  formData.append('public_id', `${fileType}_${timestamp}_${uniqueId}`);
 
   try {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dgzfnizjq';
@@ -66,6 +65,13 @@ export async function uploadGuardianDocument(
     }
 
     const data = await response.json();
+    
+    console.log('✅ Cloudinary upload successful:', {
+      secure_url: data.secure_url,
+      public_id: data.public_id,
+      resource_type: data.resource_type,
+    });
+    
     return {
       secure_url: data.secure_url,
       public_id: data.public_id
@@ -97,7 +103,7 @@ export async function uploadSignature(
   
   const uniqueId = uuidv4().substring(0, 8);
   const timestamp = Date.now();
-  formData.append('public_id', `${folder}/signature_${timestamp}_${uniqueId}`);
+  formData.append('public_id', `signature_${timestamp}_${uniqueId}`);
 
   try {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dgzfnizjq';
@@ -116,6 +122,12 @@ export async function uploadSignature(
     }
 
     const data = await response.json();
+    
+    console.log('✅ Signature upload successful:', {
+      secure_url: data.secure_url,
+      public_id: data.public_id,
+    });
+    
     return {
       secure_url: data.secure_url,
       public_id: data.public_id
