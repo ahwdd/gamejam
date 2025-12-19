@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import Image from "next/image";
 
 export default function GuardianDetailsPage() {
   const params = useParams();
@@ -204,11 +205,8 @@ export default function GuardianDetailsPage() {
                   title="Document Viewer"
                 />
               ) : (
-                <img
-                  src={viewingDoc}
-                  alt="Document"
-                  className="w-full h-auto rounded-lg"
-                />
+                <Image src={viewingDoc} alt="Document"
+                  className="w-full h-auto rounded-lg"/>
               )}
             </div>
             <div className="p-4 border-t border-slate-700 flex justify-between items-center">

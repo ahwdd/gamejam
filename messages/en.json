@@ -1,0 +1,115 @@
+{
+  "header": {
+    "partners": "Partners",
+    "prizes": "Prizes",
+    "judges": "Judges",
+    "agenda": "Agenda",
+    "rules": "Rules",
+    "faqs": "FAQs",
+    "register": "Register Now"
+  },
+  "hero": {
+    "dateLabel": "Date",
+    "date": "9 - 11 Jan 2026",
+    "locationLabel": "Location",
+    "location": "Abu Dhabi Heritage Authority",
+    "openMaps": "Open Maps",
+    "readMore": "Read More",
+    "readLess": "Read Less",
+    "register": "Register Now",
+    "aboutText": "<strong>Unity</strong> Technologies, together with <strong>Abu Dhabi Gaming</strong> and the <strong>Abu Dhabi Heritage Authority</strong>, is organizing the Heritage Gameathon, Abu Dhabi's largest game-creation event. The event focuses on celebrating Emirati culture through interactive digital storytelling. Over three days, participants will design and develop playable games inspired by the UAE's heritage, such as architecture, crafts, landscapes, folklore, music, and values. The Gameathon serves as a pathway to future opportunities, including mentorship programs and advanced training under Abu Dhabi Gaming initiatives. Participants are encouraged to use curated heritage references to ensure cultural representations are accurate, respectful, and responsible throughout their work."
+  },
+  "prizes": {
+    "badge": "Prizes & Awards",
+    "title": "What You Can Win",
+    "subtitle": "Discover the generous awards and exclusive career opportunities awaiting winners.",
+    "first": "1st Place",
+    "firstPrize": "AED 20,000",
+    "second": "2nd Place",
+    "secondPrize": "AED 15,000",
+    "third": "3rd Place",
+    "thirdPrize": "AED 10,000",
+    "fourth": "4th Place",
+    "fourthPrize": "AED 7,000",
+    "fifth": "5th Place",
+    "fifthPrize": "AED 5,000",
+    "beyondTitle": "Beyond the Game Jam",
+    "beyondDesc": "Top-performing teams will gain exclusive access to specialized gaming development programs. Participants will also navigate advanced game design methodologies and industry tools, preparing them for future challenges in the global gaming industry."
+  },
+  "getStarted": {
+    "badge": "Get Started",
+    "title": "Everything you need to participate",
+    "learnMore": "Learn More",
+    "submitTitle": "Submit on Itch.io",
+    "submitSubtitle": "Upload your game submission directly to our official Itch.io page.",
+    "rulesTitle": "Rules & Conditions",
+    "rulesSubtitle": "Review the official rules, eligibility requirements, and submission guidelines.",
+    "joinTitle": "Who can join?",
+    "joinSubtitle": "Open to students aged 7-18 years old with a passion for game development and storytelling.",
+    "toolsTitle": "Tools & Software",
+    "toolsSubtitle": "Recommended game engines, design tools, and resources to bring your ideas to life."
+  },
+  "judges": {
+    "badge": "Judges & Mentors",
+    "title": "Meet Our Expert Panel",
+    "subtitle": "Learn from industry veterans and cultural experts who will guide and evaluate teams.",
+    "member1Name": "Agatha",
+    "member1Role": "Game Design Lead",
+    "member2Name": "Ahmed",
+    "member2Role": "Cultural Advisor",
+    "member3Name": "Corrie",
+    "member3Role": "Technical Mentor",
+    "member4Name": "Hamdan",
+    "member4Role": "Heritage Specialist",
+    "member5Name": "Kalle",
+    "member5Role": "Unity Expert",
+    "member6Name": "Zain",
+    "member6Role": "Industry Veteran"
+  },
+  "agendaSection": {
+    "badge": "Schedule",
+    "title": "3-Days Agenda",
+    "subtitle": "A detailed schedule to help you plan your time throughout the Gameathon."
+  },
+  "faqs": {
+    "badge": "FAQs",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about Turath Gameathon.",
+    "q1": "Can I start working on my game before the event?",
+    "a1": "No. All games must be created entirely during the official Game Jam period. However, you may use pre-made assets only if they are free or legally owned by your team.",
+    "q2": "What is the theme of the Game Jam?",
+    "a2": "The theme will be announced at the start of the event. All submissions must align with the official theme inspired by Emirati heritage and culture.",
+    "q3": "How many people can be in a team?",
+    "a3": "Teams can have up to 8 participants. If you register as an individual, the organizers will help match you with a team.",
+    "q4": "Who owns the games created during the event?",
+    "a4": "You retain full intellectual property ownership of your game. However, Abu Dhabi Gaming and the Abu Dhabi Heritage Authority reserve the right to use, showcase, publish, modify, or distribute submitted games and related materials for promotional, cultural, or educational purposes.",
+    "q5": "When is the submission deadline?",
+    "a5": "Games must be submitted before the official deadline announced by the organizers during the event. Late submissions will not be accepted for judging.",
+    "q6": "Where can I submit my game?",
+    "a6": "All games must be submitted through our official Itch.io submission page.",
+    "q7": "Are there content restrictions for the games?",
+    "a7": "Yes. Submissions must not include:\n• Sexual content\n• Excessive violence\n• Discriminatory or hateful content\n• Culturally inappropriate themes\n\nViolations will lead to immediate disqualification.",
+    "q8": "How will the games be judged?",
+    "a8": "Entries will be evaluated by the judging panel based on:\n• Creativity & Innovation\n• Cultural Relevance\n• Gameplay & Mechanics\n• Art Direction\n• Overall Presentation",
+    "q9": "What equipment do I need to bring?",
+    "a9": "Participants must bring their own:\n• Laptop\n• Chargers & adapters\n• Required software or tools\n\nThe venue will provide internet access and power outlets."
+  },
+  "partners": {
+    "badge": "Our Partners",
+    "title": "Powered by Industry Leaders",
+    "subtitle": "In collaboration with leading organizations dedicated to preserving heritage and advancing gaming technology."
+  },
+  "contact": {
+    "text": "Still have questions? Contact us at",
+    "email": "info@heritagegameathon.ae"
+  },
+  "footer": {
+    "title": "Heritage Gameathon",
+    "subtitle": "Abu Dhabi Heritage Authority",
+    "contactTitle": "Contact",
+    "email": "info@heritagegameathon.ae",
+    "register": "Register Now",
+    "copyright": "© 2026 Heritage Gameathon. All rights reserved.",
+    "poweredBy": "Powered by"
+  }
+}

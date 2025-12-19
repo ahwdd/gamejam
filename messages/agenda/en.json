@@ -1,0 +1,48 @@
+{
+  "title": "Turath Gameathon Schedule",
+  "subtitle": "The Turath Gameathon is a three-day event dedicated to designing and prototyping games. All times are local (Abu Dhabi, UAE).",
+  "days": [
+    {
+      "day": "Day 1",
+      "date": "Friday, 09 January 2026",
+      "events": [
+        { "time": "14:00 - 15:00", "activity": "Registration", "location": "Abu Dhabi Heritage Authority" },
+        { "time": "15:00 - 15:30", "activity": "Opening Ceremony & Keynote Address", "location": "Indoor Sports Hall", "speaker": "Abu Dhabi Gaming, Abu Dhabi Heritage Authority and Unity" },
+        { "time": "15:30 - 16:00", "activity": "Theme Reveal & Rules", "location": "Indoor Sports Hall", "speaker": "Abu Dhabi Gaming, Abu Dhabi Heritage Authority" },
+        { "time": "16:00 - 16:30", "activity": "Team Formation", "location": "Indoor Sports Hall", "speaker": "Abu Dhabi Gaming, Unity and Arabhardware" },
+        { "time": "16:30 - 19:00", "activity": "Game Design and Prototyping - Session 1", "location": "Indoor Sports Hall", "speaker": "Mentors Check-in" },
+        { "time": "19:00 - 20:00", "activity": "Dinner Break", "location": "Need name of hall from ADHA" },
+        { "time": "20:00 - Late", "activity": "Free Work Time", "location": "Indoor Sports Hall", "note": "Parallel outside activities: Emirati Culture & Heritage Showcase" }
+      ]
+    },
+    {
+      "day": "Day 2",
+      "date": "Saturday, 10 January 2026",
+      "events": [
+        { "time": "08:00 - 09:00", "activity": "Optional Early Access & Coffee", "location": "Indoor Sports Hall" },
+        { "time": "09:00 - 10:00", "activity": "Breakfast", "location": "Need name of hall from ADHA" },
+        { "time": "10:00 - 13:00", "activity": "Game Prototyping and Development - Session 2", "location": "Indoor Sports Hall", "speaker": "Mentors Check-in" },
+        { "time": "13:00 - 14:00", "activity": "Lunch Break", "location": "Need name of hall from ADHA" },
+        { "time": "14:00 - 19:00", "activity": "Game Prototyping and Development - Session 3", "location": "Indoor Sports Hall", "speaker": "Mentors Check-in" },
+        { "time": "19:00 - 20:00", "activity": "Dinner Break", "location": "Need name of hall from ADHA" },
+        { "time": "20:00 - Late", "activity": "Free Work Time", "location": "Indoor Sports Hall" }
+      ]
+    },
+    {
+      "day": "Day 3",
+      "date": "Sunday, 11 January 2026",
+      "events": [
+        { "time": "08:00 - 09:00", "activity": "Optional Early Access & Coffee", "location": "Indoor Sports Hall" },
+        { "time": "09:00 - 09:30", "activity": "Breakfast", "location": "Need name of hall from ADHA" },
+        { "time": "09:30 - 10:00", "activity": "Plan of the day announcement", "location": "Indoor Sports Hall", "speaker": "Abu Dhabi Gaming" },
+        { "time": "10:00 - 13:00", "activity": "Game Prototyping and Development - Session 4", "location": "Indoor Sports Hall", "speaker": "Mentors Check-in" },
+        { "time": "13:00 - 14:00", "activity": "Lunch Break", "location": "Need name of hall from ADHA" },
+        { "time": "14:00 - 16:00", "activity": "Game Polishing", "location": "Indoor Sports Hall" },
+        { "time": "16:00 - 17:00", "activity": "Submission Deadline & Final Documentation", "location": "Online Submission Portal", "note": "Ensure all files are uploaded as specified" },
+        { "time": "17:00 - 18:00", "activity": "Judging and Evaluation Period", "location": "Indoor Sports Hall", "note": "Each team presents their game to the public and judges", "speaker": "Judges" },
+        { "time": "18:00 - 19:00", "activity": "Final Presentations & Public Showcase, Awards Ceremony & Closing Remarks", "location": "Indoor Sports Hall", "note": "Announcing winners and future event details" },
+        { "time": "19:00", "activity": "Event Conclusion", "location": "Indoor Sports Hall" }
+      ]
+    }
+  ]
+}

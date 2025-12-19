@@ -1,35 +1,38 @@
-// layout.tsx
+// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cairo, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "@/components/StoreProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const cairo = Cairo({
+  subsets: ['latin', 'arabic'],
+  weight: ['400', '600', '700', '900'],
+  variable: '--font-cairo',
+  display: 'swap',
 });
-
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Student Hub",
-  description: "Game Jam Event Management Platform",
+  title: "Heritage Gameathon - Abu Dhabi",
+  description: "Abu Dhabi's largest game-creation event...",
+  keywords: "gameathon, game jam, abu dhabi, heritage",
+  openGraph: {
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen overflow-x-hidden min-h-screen`}>
-        <StoreProvider>
-          {children}
-        </StoreProvider>
+    <html>
+      <body className={`${cairo.variable} ${geistMono.variable} antialiased w-screen overflow-x-hidden min-h-screen`}>
+        {children}
       </body>
     </html>
   );
