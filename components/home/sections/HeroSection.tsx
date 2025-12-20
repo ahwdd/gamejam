@@ -50,9 +50,9 @@ export default function HeroSection() {
 
           <div className="flex flex-col items-center gap-6 mb-8">
             <Image src="/assets/logos/gameathon-ar.png" alt="Heritage Gameathon AR" width={500} height={100}
-                   className="h-24 md:h-30 w-auto" priority />
+                   className="h-15 md:h-30 w-auto" priority />
             <Image src="/assets/logos/gameathon-en.png" alt="Heritage Gameathon EN" width={500} height={200}
-                   className="h-45 md:h-54 w-auto" priority />
+                   className="h-27 md:h-54 w-auto" priority />
           </div>
 
           <div
@@ -105,35 +105,35 @@ export default function HeroSection() {
             <div className={clsx("grid gap-4 md:grid-cols-12")}>
               <div className={clsx('bg-black/25 backdrop-blur-sm border rounded-lg py-2',
                   'border-[rgba(201,160,92,0.06)] flex items-center transition-all duration-1000 ease-in-out',
-                  showLocationHover? 'col-span-5 px-2': 'col-span-6 gap-3 px-4'
+                  showLocationHover? 'md:col-span-5 px-2': 'md:col-span-6 gap-3 px-1 md:px-4'
                 )}>
                   <FiCalendar className="text-[rgb(201,160,92)]/95 size-12 p-2" />
                 <div className="text-left min-w-0">
                   <p className="text-gray-400 text-xs uppercase tracking-wide">{t('dateLabel')}</p>
-                  <p className="text-white text-lg">{t('date')}</p>
+                  <p className="text-white text-sm md:text-lg">{t('date')}</p>
                 </div>
               </div>
 
               <div onMouseEnter={() => setShowLocationHover(true)} onMouseLeave={() => setShowLocationHover(false)}
                 className={clsx('bg-black/25 backdrop-blur-sm border rounded-lg py-2 duration-1000 ease-in-out',
                   'border-[rgba(201,160,92,0.06)] cursor-pointer overflow-hidden transition-all',
-                  showLocationHover? 'col-span-7 px-2': 'col-span-6 px-4')}>
+                  showLocationHover? 'md:col-span-7 px-2': 'md:col-span-6 px-1 md:px-4')}>
                 <div className={clsx("flex items-center", showLocationHover? '': 'gap-3')}>
                   <FiMapPin className="text-[rgb(201,160,92)]/95 size-12 p-2" />
 
-                  <div className="flex items-center gap-2 w-full">
+                  <div className="flex md:items-center max-md:justify-center gap-2 w-full max-md:flex-col">
                     <div className="text-left min-w-0">
                       <p className="text-gray-400 text-xs uppercase tracking-wide">{t('locationLabel')}</p>
-                      <p className="text-white text-base md:text-lg truncate">{t('location')}</p>
+                      <p className="text-white text-sm md:text-lg truncate">{t('location')}</p>
                     </div>
 
-                    <div className={clsx('transition-all duration-1000 ease-in-out flex items-center gap-1',
-                        showLocationHover ? 'opacity-100 max-w-xs translate-x-0' : 'opacity-0 max-w-0 translate-x-4')}>
+                    <div className={clsx('transition-all duration-1000 ease-in-out flex items-center gap-1 opacity-100 max-w-xs translate-x-0',
+                        showLocationHover ? '' : 'md:opacity-0 md:max-w-0 md:translate-x-4')}>
                       <a href="https://maps.app.goo.gl/CfnJgL362c6RLac77" target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-1 text-white
-                        transition-colors whitespace-nowrap text-sm border-l border-white pl-2">
+                        transition-colors whitespace-nowrap text-sm md:mt-4 md:border-l md:border-white md:pl-2">
                         <span className="underline">{t('openMaps')}</span>
-                        <FiExternalLink className="text-lg" />
+                        <FiExternalLink className="md:text-lg text-sm" />
                       </a>
                     </div>
                   </div>
@@ -153,13 +153,13 @@ export default function HeroSection() {
       </div>
 
       <div className={clsx('absolute left-0 right-0 bottom-6 flex justify-center z-20 pointer-events-auto transition-all duration-1000',)}>
-        <div className="flex items-center justify-center gap-8 flex-wrap">
+        <div className="flex items-center justify-center gap-2 md:gap-8 flex-wrap">
           <Image src="/assets/logos/sp1.png" alt="Sponsor 1" width={200} height={100}
-                 className="h-24 md:h-32 w-auto" />
+                 className="h-14 md:h-24 xl:h-32 w-auto" />
           <Image src="/assets/logos/sp2.png" alt="Sponsor 2" width={200} height={100}
-                 className="h-16 md:h-20 w-auto" />
+                 className="h-8 md:h-16 xl:h-20 w-auto" />
           <Image src="/assets/logos/sp3.png" alt="Sponsor 3" width={200} height={100}
-                 className="h-16 md:h-20 w-auto" />
+                 className="h-8 md:h-16 xl:h-20 w-auto" />
         </div>
       </div>
     </section>

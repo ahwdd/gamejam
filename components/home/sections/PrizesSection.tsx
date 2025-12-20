@@ -2,137 +2,95 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import DecorativeFrames from './DecorativeFrame';
 import { FiAward } from 'react-icons/fi';
 import Image from 'next/image';
-
-// Import configuration
-const CONFIG = {
-  prizes: {
-    topPrizes: [
-      {
-        place: 1,
-        icon: '/icons/medal1.png',
-        color: 'from-yellow-400 to-yellow-600',
-        bgColor: 'bg-yellow-500/20',
-        borderColor: 'border-yellow-500'
-      },
-      {
-        place: 2,
-        icon: '/icons/medal2.png',
-        color: 'from-gray-300 to-gray-500',
-        bgColor: 'bg-gray-400/20',
-        borderColor: 'border-gray-400'
-      },
-      {
-        place: 3,
-        icon: '/icons/medal3.png',
-        color: 'from-orange-400 to-orange-600',
-        bgColor: 'bg-orange-500/20',
-        borderColor: 'border-orange-500'
-      }
-    ],
-    beyondIcon: '/icons/rocket.png'
-  }
-};
+import { CONFIG } from '@/config/siteConfig';
+import GameathonBadge from '@/components/ui/GameathonBadge';
 
 export default function PrizesSection() {
   const t = useTranslations('prizes');
 
   return (
-    <section id="prizes" className="relative py-20 bg-black">
-      <DecorativeFrames />
+    <section id="prizes" className="relative py-20">
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 bg-(--gameathon-gold)/20 border border-(--gameathon-gold) text-(--gameathon-gold) px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
-            <FiAward />
+      <div className="container mx-auto px-4 relative z-10 space-y-4">
+        <div className="flex justify-center">
+          <GameathonBadge className='md:text-lg xl:text-xl'>
             {t('badge')}
-          </span>
+          </GameathonBadge>
         </div>
 
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4">
+        <h2 className="text-3xl md:text-5xl xl:text-7xl font-bold text-white text-center">
           {t('title')}
         </h2>
 
-        <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
+        <p className="text-sm md:text-xl xl:text-2xl text-gray-400 text-center max-w-6xl mx-auto mb-16">
           {t('subtitle')}
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
-          {CONFIG.prizes.topPrizes.map((prize, index) => {
-            const placeKey = index === 0 ? 'first' : index === 1 ? 'second' : 'third';
-            
-            return (
-              <div
-                key={prize.place}
-                className={`relative rounded-xl overflow-hidden ${prize.bgColor} border-2 ${prize.borderColor} backdrop-blur-sm`}
-              >
-                <div className={`relative h-0.5 bg-linear-to-r ${prize.color}`}>
-                  <div className={`absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-linear-to-r ${prize.color} rounded-full w-10 h-10 flex items-center justify-center shadow-lg`}>
-                    <span className="text-black font-bold text-lg">{prize.place}</span>
-                  </div>
+        <div className="flex items-center justify-center md:gap-[2.5%] gap-2 mb-12 max-w-6xl mx-auto">
+          {CONFIG.prizes.topPrizes.map((prize, i) => (
+            <div key={prize.place}
+              className={`relative rounded-2xl overflow-hidden border backdrop-blur-sm md:aspect-square ${i==1?'w-3/9':'w-3/10'}`}
+                style={{
+                  background: prize.bgColor,
+                  border: prize.borderColor,
+                  boxShadow: prize.shadow,
+                }}>
+
+              <div className={`2xl:px-16 md:px-4 p-2 text-center flex items-center justify-center flex-col size-full gap-1 md:gap-3`}>
+                <div className={`inline-flex items-center justify-center xl:size-26 size-20 rounded-full mb-1`}
+                  style={{background: prize.iconBg, boxShadow: prize.iconShadow}}>
+                  <Image src={prize.icon} alt={t(prize.key)} width={48} height={48} className="xl:size-16 size-12 object-contain"/>
                 </div>
 
-                <div className="p-8 pt-12 text-center">
-                  <div className={`inline-flex items-center justify-center w-20 h-20 ${prize.bgColor} rounded-full mb-4`}>
-                    <Image 
-                      src={prize.icon} 
-                      alt={t(placeKey)} 
-                      width={48} 
-                      height={48} 
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
-
-                  <h3 className="text-white font-bold text-xl mb-3">
-                    {t(placeKey)}
-                  </h3>
-
-                  <p className="text-3xl font-bold text-(--gameathon-gold)">
-                    {t(`${placeKey}Prize`)}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-3xl mx-auto">
-          <div className="flex items-center gap-4 bg-linear-to-r from-gray-900/50 to-gray-800/50 border border-gray-700 rounded-lg p-6 backdrop-blur-sm">
-            <div className="bg-(--gameathon-gold)/20 rounded-full p-4 shrink-0">
-              <FiAward className="text-(--gameathon-gold) text-2xl" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-white font-bold text-lg">{t('fourth')}</h4>
-              <p className="text-(--gameathon-gold) font-bold text-xl">{t('fourthPrize')}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 bg-linear-to-r from-gray-900/50 to-gray-800/50 border border-gray-700 rounded-lg p-6 backdrop-blur-sm">
-            <div className="bg-(--gameathon-gold)/20 rounded-full p-4 shrink-0">
-              <FiAward className="text-(--gameathon-gold) text-2xl" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-white font-bold text-lg">{t('fifth')}</h4>
-              <p className="text-(--gameathon-gold) font-bold text-xl">{t('fifthPrize')}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-linear-to-br from-(--gameathon-gold)/10 to-(--gameathon-gold-light)/5 border border-(--gameathon-gold)/30 rounded-xl p-8 backdrop-blur-sm">
-            <div className="flex items-start gap-4">
-              <div className="bg-(--gameathon-gold) rounded-full p-4 shrink-0">
-                <Image src={CONFIG.prizes.beyondIcon} alt="Rocket" width={32} height={32} className="w-8 h-8 object-contain" />
-              </div>
-              <div>
-                <h3 className="text-white font-bold text-2xl mb-3">
-                  {t('beyondTitle')}
+                <h3 className="text-white flex flex-col items-center justify-center gap-1 md:gap-3">
+                  <span className="block font-bold tracking-wide text-2xl">{prize.en}</span>
+                  <span className="block text-sm font-thin text-gray-400">{prize.ar}</span>
                 </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('beyondDesc')}
+
+                <p className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent"
+                  style={{ backgroundImage: prize.iconBg, }}>
+                  {t(`${prize.key}Prize`)}
                 </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-6xl mx-auto">
+          {CONFIG.prizes.otherPrizes.map((prize: any) => (
+            <div key={prize.key}
+              className="flex items-center justify-around gap-4 bg-linear-to-br from-white/17 to-neutral-400/17 border border-white rounded-lg p-6 backdrop-blur-sm">
+                <h4 className="text-white flex flex-col">
+                  <span className="ml-auto block font-bold tracking-wide text-2xl">{prize.en}</span>
+                  <span className="ml-auto block text-sm font-thin text-gray-400">{prize.ar}</span>
+                </h4>
+                <p className="bg-clip-text text-transparent font-bold text-3xl md:text-5xl bg-linear-to-br from-white/80 to-neutral-400/80">
+                  {t(`${prize.key}Prize`)}
+                </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-linear-to-br from-(--gameathon-gold)/10 to-(--gameathon-gold-light)/5 flex items-start xl:gap-8 gap-4
+            border border-(--gameathon-gold)/30 rounded-xl xl:px-16 p-8 backdrop-blur-sm">
+            <div className="bg-(--gameathon-gold) rounded-xl p-2 shrink-0">
+              <Image src={CONFIG.prizes.beyondIcon} alt="Rocket" width={32} height={32} 
+                className="size-10 object-contain" />
+            </div>
+            <div>
+              <h3 className="text-white font-bold md:text-3xl text-2xl mb-3">
+                {t('beyondTitle')}
+              </h3>
+              <div className="text-gray-300 leading-relaxed text-base md:text-xl">
+                {t.rich('beyondRich', {
+                  p: (children) => <p className="mb-4">{children}</p>,
+                  ul: (children) => <ul className="list-disc ml-6 mb-4">{children}</ul>,
+                  li: (children) => <li className="mb-1">{children}</li>,
+                  strong: (children) => <strong>{children}</strong>,
+                })}
               </div>
             </div>
           </div>

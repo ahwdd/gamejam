@@ -4,7 +4,6 @@ import React from 'react';
 import Header from '@/components/home/layout/Header';
 import Footer from '@/components/home/layout/Footer';
 import HeroSection from '@/components/home/sections/HeroSection';
-import PartnersSection from '@/components/home/sections/PartnersSection';
 import PrizesSection from '@/components/home/sections/PrizesSection';
 import GetStartedSection from '@/components/home/sections/GetStartedSection';
 import JudgesSection from '@/components/home/sections/JudgesSection';
@@ -17,7 +16,6 @@ export default function LandingPage() {
         <Header />
         <main>
           <HeroSection />
-          <PartnersSection />
           <PrizesSection />
           <GetStartedSection />
           <JudgesSection />

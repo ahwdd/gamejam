@@ -22,19 +22,20 @@
   "prizes": {
     "badge": "Prizes & Awards",
     "title": "What You Can Win",
-    "subtitle": "Discover the generous awards and exclusive career opportunities awaiting winners.",
+    "subtitle": "Compete for generous cash prizes and exclusive opportunities",
     "first": "1st Place",
-    "firstPrize": "AED 20,000",
+    "firstPrize": "AED 30,000",
     "second": "2nd Place",
-    "secondPrize": "AED 15,000",
+    "secondPrize": "AED 25,000",
     "third": "3rd Place",
-    "thirdPrize": "AED 10,000",
+    "thirdPrize": "AED 20,000",
     "fourth": "4th Place",
-    "fourthPrize": "AED 7,000",
+    "fourthPrize": "AED 15,000",
     "fifth": "5th Place",
-    "fifthPrize": "AED 5,000",
+    "fifthPrize": "AED 10,000",
     "beyondTitle": "Beyond the Game Jam",
-    "beyondDesc": "Top-performing teams will gain exclusive access to specialized gaming development programs. Participants will also navigate advanced game design methodologies and industry tools, preparing them for future challenges in the global gaming industry."
+    "beyondDesc": "Top-performing teams will gain exclusive access to specialized gaming development programs. Participants will also navigate advanced game design methodologies and industry tools, preparing them for future challenges in the global gaming industry.",
+    "beyondRich": "<p>The Heritage Gameathon is a structured talent development platform. Participants will strengthen their skills in:</p><ul><li>Game design and prototyping</li><li>Storytelling</li><li>Visual arts and animation</li><li>Coding and technical development</li><li>Teamwork</li></ul><p>Throughout the event, creators will receive guidance from industry mentors and technical experts from <strong>Unity Technologies</strong> and <strong>Abu Dhabi Gaming</strong>, ensuring a supportive and high-quality development environment.</p><p>In addition to the game jam, participants can enjoy a variety of engaging activities during the event, including workshops and cultural experiences.</p>"
   },
   "getStarted": {
     "badge": "Get Started",

@@ -5,19 +5,7 @@ import { useTranslations } from 'next-intl';
 import DecorativeFrames from './DecorativeFrame';
 import { FiUsers } from 'react-icons/fi';
 import Image from 'next/image';
-
-const CONFIG = {
-  judges: {
-    team: [
-      { key: 'member1', img: '/assets/team/Agatha.jpg' },
-      { key: 'member2', img: '/assets/team/Ahmed.jpg' },
-      { key: 'member3', img: '/assets/team/Corrie.jpg' },
-      { key: 'member4', img: '/assets/team/Hamdan.jpg' },
-      { key: 'member5', img: '/assets/team/Kalle.jpg' },
-      { key: 'member6', img: '/assets/team/Zain.jpg' }
-    ]
-  }
-};
+import { CONFIG } from '@/config/siteConfig';
 
 export default function JudgesSection() {
   const t = useTranslations('judges');
@@ -43,7 +31,7 @@ export default function JudgesSection() {
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-          {CONFIG.judges.team.map((member) => (
+          {CONFIG.judges.team.map((member: any) => (
             <div
               key={member.key}
               className="group relative overflow-hidden rounded-xl bg-linear-to-br from-gray-900 to-gray-800 border border-gray-700 hover:border-(--gameathon-gold) transition-all duration-300"

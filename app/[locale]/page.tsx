@@ -7,12 +7,14 @@ import GetStartedSection from '@/components/home/sections/GetStartedSection';
 import JudgesSection from '@/components/home/sections/JudgesSection';
 import AgendaSection from '@/components/home/sections/AgendaSection';
 import FAQsSection from '@/components/home/sections/FAQsSection';
+import DecorativeFrames from '@/components/home/sections/DecorativeFrame';
 
 export default function LandingPage() {
   return (
     <>
       <Header />
-      <main>
+      <main className='bg-linear-to-r from-[#202020] to-[#232A2A] relative'>
+        <DecorativeFrames />
         <HeroSection />
         <PrizesSection />
         <GetStartedSection />

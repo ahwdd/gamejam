@@ -6,33 +6,7 @@ import DecorativeFrames from './DecorativeFrame';
 import { FiArrowRight } from 'react-icons/fi';
 import { BsRocket } from 'react-icons/bs';
 import Image from 'next/image';
-
-const CONFIG = {
-  getStarted: {
-    items: [
-      {
-        key: 'submit',
-        icon: '/icons/game-store.png',
-        href: 'https://example.com/itch'
-      },
-      {
-        key: 'rules',
-        icon: '/icons/ruler.png',
-        href: 'https://example.com/rules'
-      },
-      {
-        key: 'join',
-        icon: '/icons/user-check.png',
-        href: null  // No link for this item
-      },
-      {
-        key: 'tools',
-        icon: '/icons/cpu.png',
-        href: 'https://example.com/tools'
-      }
-    ]
-  }
-};
+import { CONFIG } from '@/config/siteConfig';
 
 export default function GetStartedSection() {
   const t = useTranslations('getStarted');
@@ -55,7 +29,7 @@ export default function GetStartedSection() {
         </h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {CONFIG.getStarted.items.map((item) => (
+          {CONFIG.getStarted.items.map((item: any) => (
             <div key={item.key}
               className="bg-linear-to-br from-gray-900/80 to-gray-800/80 border border-gray-700 rounded-xl p-6 backdrop-blur-sm hover:border-(--gameathon-gold) transition-all duration-300 group"
             >
