@@ -1,21 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import DecorativeFrames from '../more/DecorativeFrame';
-import { FiHelpCircle, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import GameathonBadge from '@/components/ui/GameathonBadge';
 
 export default function FAQsSection() {
   const t = useTranslations('faqs');
-  const contact = useTranslations('contact');
   
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [heights, setHeights] = useState<{ [key: number]: number }>({});
+  const contentRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    const newHeights: { [key: number]: number } = {};
+    Object.keys(contentRefs.current).forEach((key) => {
+      const index = parseInt(key);
+      const element = contentRefs.current[index];
+      if (element) {
+        newHeights[index] = element.scrollHeight;
+      }
+    });
+    setHeights(newHeights);
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  // Build FAQs array from flat translation keys
   const questions = [
     { q: t('q1'), a: t('a1') },
     { q: t('q2'), a: t('a2') },
@@ -29,55 +41,54 @@ export default function FAQsSection() {
   ];
 
   return (
-    <section id="faqs" className="relative py-20 bg-black">
-      <DecorativeFrames />
+    <section id="faqs" className="relative py-10 md:py-20">
+      <div className="lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto px-4 relative z-10">
+        <GameathonBadge variant='secondary' className='text-sm md:text-lg xl:text-xl mx-auto'>
+          {t('badge')}
+        </GameathonBadge>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Badge */}
-        <div className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 bg-(--gameathon-gold)/20 border border-(--gameathon-gold) text-(--gameathon-gold) px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
-            <FiHelpCircle />
-            {t('badge')}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4">
+        <h2 className="text-3xl md:text-5xl xl:text-7xl font-bold text-white text-center mb-2 md:mb-4">
           {t('title')}
         </h2>
 
-        {/* Subtitle */}
-        <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
+        <p className="text-gray-300 xl:text-2xl md:text-base text-sm leading-relaxed text-center mb-8 md:mb-16">
           {t('subtitle')}
         </p>
 
-        {/* FAQs List */}
-        <div className="max-w-4xl mx-auto space-y-4">
+        <ol className="space-y-4 w-full">
           {questions.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-linear-to-br from-gray-900/80 to-gray-800/80 border border-gray-700 rounded-xl overflow-hidden backdrop-blur-sm"
-            >
-              {/* Question Button */}
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-800/50 transition-colors duration-200"
-              >
-                <span className="text-white font-semibold text-lg pr-4">
-                  {faq.q}
-                </span>
-                <div className="shrink-0 text-(--gameathon-gold) text-2xl">
+            <li key={index}
+              className="w-full bg-white/5 border-white/10 border rounded-3xl overflow-hidden backdrop-blur-sm">
+              <button id={`faq-${index}-button`} onClick={() => toggleFAQ(index)}
+                aria-expanded={openIndex === index} aria-controls={`faq-${index}`}
+                className="w-full flex items-center justify-between p-6 text-left">
+                <div className="flex items-center gap-3">
+                  <span className="text-(--gameathon-gold) text-sm md:text-base font-bold">
+                    {t('q')}
+                    {index + 1}
+                  </span>
+                  <span className="text-white font-semibold text-base md:text-lg pr-4">
+                    {faq.q}
+                  </span>
+                </div>
+                <div className="shrink-0 text-(--gameathon-gold) text-xl md:text-2xl">
                   {openIndex === index ? <FiChevronUp /> : <FiChevronDown />}
                 </div>
               </button>
 
-              {/* Answer */}
-              <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openIndex === index ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-                }`}
-              >
-                <div className="px-6 pb-6 pt-0">
+              <div id={`faq-${index}`} role="region" aria-labelledby={`faq-${index}-button`}
+                style={{
+                  height: openIndex === index ? `${heights[index]}px` : '0px',
+                  transition: 'height 500ms cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+                className="overflow-hidden">
+                <div ref={(el) => { contentRefs.current[index] = el; }}
+                  style={{
+                    transform: openIndex === index ? 'translateY(0)' : 'translateY(-8px)',
+                    opacity: openIndex === index ? 1 : 0,
+                    transition: 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className="px-6 pb-6 pt-0 ltr:ml-8 rtl:mr-8">
                   <div className="border-t border-gray-700 pt-4">
                     <p className="text-gray-300 leading-relaxed whitespace-pre-line">
                       {faq.a}
@@ -85,24 +96,9 @@ export default function FAQsSection() {
                   </div>
                 </div>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
-
-        {/* Contact Box */}
-        <div className="max-w-2xl mx-auto mt-12">
-          <div className="bg-linear-to-br from-red-900/30 to-red-800/20 border border-red-700/50 rounded-xl p-8 text-center backdrop-blur-sm">
-            <p className="text-gray-200 text-lg mb-3">
-              {contact('text')}
-            </p>
-            <a 
-              href={`mailto:${contact('email')}`}
-              className="text-(--gameathon-gold) hover:text-(--gameathon-gold-light) font-bold text-xl transition-colors duration-200"
-            >
-              {contact('email')}
-            </a>
-          </div>
-        </div>
+        </ol>
       </div>
     </section>
   );

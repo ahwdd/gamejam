@@ -16,7 +16,7 @@ export default function AgendaSection() {
 
   return (
     <section id="agenda" className="relative py-10 md:py-20">
-      <div className=" lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto px-4 relative z-10 space-y-2 md:space-y-4">
+      <div className="lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto px-4 relative z-10 space-y-2 md:space-y-4">
         <div className="flex justify-center">
           <GameathonBadge variant='secondary' className='text-sm md:text-lg xl:text-xl'>
             {t('badge')}

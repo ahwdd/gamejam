@@ -13,7 +13,7 @@ export default function LandingPage() {
   return (
     <>
       <Header />
-      <main className='bg-linear-to-r from-[#202020] to-[#232A2A] relative'>
+      <main className='bg-linear-to-b from-[#202020] to-[#232A2A] relative'>
         <DecorativeFrames />
         <HeroSection />
         <PrizesSection />

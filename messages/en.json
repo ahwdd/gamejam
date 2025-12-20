@@ -1,6 +1,5 @@
 {
   "header": {
-    "partners": "Partners",
     "prizes": "Prizes",
     "judges": "Judges",
     "agenda": "Agenda",
@@ -74,8 +73,9 @@
   },
   "faqs": {
     "badge": "FAQs",
-    "title": "Frequently Asked Questions",
-    "subtitle": "Everything you need to know about Turath Gameathon.",
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know about Turath Gameathon",
+    "q": "Q",
     "q1": "Can I start working on my game before the event?",
     "a1": "No. All games must be created entirely during the official Game Jam period. However, you may use pre-made assets only if they are free or legally owned by your team.",
     "q2": "What is the theme of the Game Jam?",
@@ -95,20 +95,15 @@
     "q9": "What equipment do I need to bring?",
     "a9": "Participants must bring their own:\n• Laptop\n• Chargers & adapters\n• Required software or tools\n\nThe venue will provide internet access and power outlets."
   },
-  "partners": {
-    "badge": "Our Partners",
-    "title": "Powered by Industry Leaders",
-    "subtitle": "In collaboration with leading organizations dedicated to preserving heritage and advancing gaming technology."
-  },
   "contact": {
     "text": "Still have questions? Contact us at",
-    "email": "info@heritagegameathon.ae"
+    "email": "Hello@adgaming.ae"
   },
   "footer": {
     "title": "Heritage Gameathon",
     "subtitle": "Abu Dhabi Heritage Authority",
     "contactTitle": "Contact",
-    "email": "info@heritagegameathon.ae",
+    "email": "Hello@adgaming.ae",
     "register": "Register Now",
     "copyright": "© 2026 Heritage Gameathon. All rights reserved.",
     "poweredBy": "Powered by"

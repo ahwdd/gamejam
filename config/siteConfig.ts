@@ -102,12 +102,6 @@ export const CONFIG = {
     ]
   },
 
-  partners: [
-    { name: 'Unity Technologies', logo: '/assets/logos/sp1.png' },
-    { name: 'Abu Dhabi Gaming', logo: '/assets/logos/sp2.png' },
-    { name: 'Abu Dhabi Heritage Authority', logo: '/assets/logos/sp3.png' }
-  ],
-
   logos: {
     main: {
       en: '/assets/logos/gameathon-en.png',

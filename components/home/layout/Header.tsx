@@ -24,7 +24,6 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { label: t('partners'), href: '#partners' },
     { label: t('prizes'), href: '#prizes' },
     { label: t('judges'), href: '#judges' },
     { label: t('agenda'), href: '#agenda' },
@@ -38,11 +37,8 @@ export default function Header() {
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex items-center justify-center ${
-        isScrolled ? 'backdrop-blur-md shadow-lg ' : 'bg-transparent h-20'
-      }`}
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex items-center justify-center ${
+        isScrolled ? 'backdrop-blur-md shadow-lg ' : 'bg-transparent h-20'}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <span />
@@ -59,11 +55,9 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={toggleLanguage}
+            <button onClick={toggleLanguage}
               className="flex items-center gap-2 text-white hover:text-(--gameathon-gold) transition-colors duration-200"
-              aria-label="Toggle Language"
-            >
+              aria-label="Toggle Language">
               <FiGlobe className="text-xl" />
               <span className="hidden sm:inline font-medium">
                 {locale === 'en' ? 'عربي' : 'English'}
@@ -77,38 +71,43 @@ export default function Header() {
             </div>
 
             {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden text-white text-2xl"
-              aria-label="Toggle Menu"
-            >
+              aria-label="Toggle Menu">
               {isMobileMenuOpen ? <FiX /> : <FiMenu />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-black/95 backdrop-blur-md border-t border-gray-800">
-            <nav className="flex flex-col space-y-4 py-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-white hover:text-(--gameathon-gold) transition-colors duration-200 font-medium px-4"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-              <div className="px-4 pt-2">
-                <GameathonButton size="medium" external href={CONFIG.registerationLink}>
-                  {t('register')}
-                </GameathonButton>
-              </div>
-            </nav>
+          <div className="lg:hidden">
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-hidden="true"/>
+
+            <div className={`fixed z-50 top-20 ${locale === 'ar' ? 'left-4' : 'right-4'}
+                w-[86%] max-w-sm rounded-2xl overflow-hidden border border-gray-800
+                bg-black/70 backdrop-blur-md transform transition-transform duration-400 ease-out`}>
+              <nav className="flex flex-col space-y-4 py-6 px-4">
+                {navLinks.map((link) => (
+                  <a key={link.href} href={link.href}
+                    className="text-white hover:text-(--gameathon-gold) transition-colors duration-200 font-medium px-2"
+                    onClick={() => setIsMobileMenuOpen(false)}>
+                    {link.label}
+                  </a>
+                ))}
+
+                <div className="pt-2">
+                  <GameathonButton size={isScrolled ? "small" : "medium"} external
+                    href={CONFIG.registerationLink}>
+                    {t('register')}
+                  </GameathonButton>
+                </div>
+              </nav>
+            </div>
           </div>
         )}
+
       </div>
     </header>
   );
