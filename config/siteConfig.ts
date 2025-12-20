@@ -1,4 +1,8 @@
+const  registerationLink= "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAaGjiwdUM0QwVzE1RUU5UVZKOTdCVUNLN1NEUVFIUC4u"
+
 export const CONFIG = {
+  registerationLink: registerationLink,
+
   prizes: {
     topPrizes: [
       {
@@ -44,12 +48,13 @@ export const CONFIG = {
       {
         key: 'submit',
         icon: '/icons/game-store.png',
-        href: 'https://example.com/itch'
+        href: registerationLink,
+        external: true
       },
       {
         key: 'rules',
         icon: '/icons/ruler.png',
-        href: 'https://example.com/rules'
+        href: '#rules'
       },
       {
         key: 'join',
@@ -59,7 +64,7 @@ export const CONFIG = {
       {
         key: 'tools',
         icon: '/icons/cpu.png',
-        href: 'https://example.com/tools'
+        href: null
       }
     ]
   },
@@ -67,11 +72,11 @@ export const CONFIG = {
   judges: {
     team: [
       { key: 'member1', img: '/assets/team/Agatha.jpg' },
-      { key: 'member2', img: '/assets/team/Ahmed.jpg' },
-      { key: 'member3', img: '/assets/team/Corrie.jpg' },
-      { key: 'member4', img: '/assets/team/Hamdan.jpg' },
+      { key: 'member2', img: '/assets/team/Corrie.jpg' },
+      { key: 'member3', img: '/assets/team/Ahmed.jpg' },
+      { key: 'member4', img: '/assets/team/Zain.jpg' },
       { key: 'member5', img: '/assets/team/Kalle.jpg' },
-      { key: 'member6', img: '/assets/team/Zain.jpg' }
+      { key: 'member6', img: '/assets/team/Hamdan.jpg' },
     ]
   },
 

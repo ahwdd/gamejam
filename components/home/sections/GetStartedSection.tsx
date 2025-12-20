@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import DecorativeFrames from './DecorativeFrame';
-import { FiArrowRight } from 'react-icons/fi';
-import { BsRocket } from 'react-icons/bs';
+import { FiExternalLink } from 'react-icons/fi';
 import Image from 'next/image';
 import { CONFIG } from '@/config/siteConfig';
 
@@ -13,57 +11,40 @@ export default function GetStartedSection() {
   const locale = useLocale();
 
   return (
-    <section id="rules" className="relative py-20 bg-linear-to-b from-black to-gray-900">
-      <DecorativeFrames />
+    <section id="rules" className="relative py-10 md:py-20 px-4">
+      <div className="container mx-auto relative z-10">
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 bg-(--gameathon-gold)/20 border border-(--gameathon-gold) text-(--gameathon-gold) px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
-            <BsRocket />
-            {t('badge')}
-          </span>
-        </div>
-
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16">
-          {t('title')}
+        <h2 className="text-2xl md:text-4xl xl:text-6xl font-bold text-white text-center">
+          {t('badge')}
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <p className="text-sm md:text-xl xl:text-2xl text-gray-400 text-center lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto mb-6 md:mb-16">
+          {t('title')}
+        </p>
+
+        <div className="grid sm:grid-cols-2 gap-6 lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto">
           {CONFIG.getStarted.items.map((item: any) => (
             <div key={item.key}
-              className="bg-linear-to-br from-gray-900/80 to-gray-800/80 border border-gray-700 rounded-xl p-6 backdrop-blur-sm hover:border-(--gameathon-gold) transition-all duration-300 group"
-            >
-              <div className="bg-(--gameathon-gold)/20 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4 group-hover:bg-(--gameathon-gold)/30 transition-colors duration-300">
-                <Image 
-                  src={item.icon} 
-                  alt={t(`${item.key}Title`)} 
-                  width={32} 
-                  height={32} 
-                  className="w-8 h-8 object-contain"
-                />
+              className="bg-white/5 border border-white/10 rounded-3xl xl:p-10 p-6 backdrop-blur-sm space-y-1.5 md:space-y-2 xl:space-y-3">
+              <div className="bg-[#C8A47F] rounded-3xl p-4 xl:p-5 size-16 xl:size-22 flex items-center justify-center mb-6 md:mb-8 xl:mb-12">
+                <Image src={item.icon} alt={t(`${item.key}Title`)} width={32} height={32} 
+                  className="size-8 md:size-16 object-contain"/>
               </div>
 
-              <h3 className="text-white font-bold text-xl mb-3">
+              <h3 className="text-white font-bold xl:text-3xl md:text-xl text-lg">
                 {t(`${item.key}Title`)}
               </h3>
 
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              <p className="text-gray-300 xl:text-2xl md:text-base text-sm leading-relaxed">
                 {t(`${item.key}Subtitle`)}
               </p>
 
               {item.href && (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-(--gameathon-gold) hover:text-(--gameathon-gold-light) transition-colors duration-200 text-sm font-medium group"
-                >
+                <a href={item.href} target={item.external? "_blank": "_self"} rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#C8A47F] xl:text-lg md:text-sm text-xs font-bold group mt-2 md:mt-2.5 xl:mt-4">
                   <span>{t('learnMore')}</span>
-                  <FiArrowRight 
-                    className={`group-hover:translate-x-1 transition-transform ${
-                      locale === 'ar' ? 'rotate-180' : ''
-                    }`} 
-                  />
+                  <FiExternalLink className={`group-hover:translate-x-1 transition-transform 
+                    ${locale === 'ar' ? 'rotate-180' : ''}`}/>
                 </a>
               )}
             </div>

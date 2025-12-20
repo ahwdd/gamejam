@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import GameathonButton from '../../ui/GameathonButton';
 import { FiGlobe, FiMenu, FiX } from 'react-icons/fi';
 import Image from 'next/image';
+import { CONFIG } from '@/config/siteConfig';
 
 export default function Header() {
   const t = useTranslations('header');
@@ -70,7 +71,7 @@ export default function Header() {
             </button>
 
             <div className="hidden lg:block">
-              <GameathonButton href="https://example.com/register" size="medium" external>
+              <GameathonButton href={CONFIG.registerationLink} size="medium" external>
                 {t('register')}
               </GameathonButton>
             </div>
@@ -101,8 +102,7 @@ export default function Header() {
                 </a>
               ))}
               <div className="px-4 pt-2">
-                <GameathonButton size="medium" external
-                href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAaGjiwdUM0QwVzE1RUU5UVZKOTdCVUNLN1NEUVFIUC4u">
+                <GameathonButton size="medium" external href={CONFIG.registerationLink}>
                   {t('register')}
                 </GameathonButton>
               </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import GameathonButton from '../../ui/GameathonButton';
 import Image from 'next/image';
+import { CONFIG } from '@/config/siteConfig';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -52,7 +53,7 @@ export default function Footer() {
 
             {/* Column 3: Register Button */}
             <div className="flex justify-end">
-              <GameathonButton href="https://example.com/register" size="small" external>
+              <GameathonButton href={CONFIG.registerationLink} size="small" external>
                 {t('register')}
               </GameathonButton>
             </div>

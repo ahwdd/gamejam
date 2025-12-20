@@ -6,6 +6,7 @@ import GameathonButton from '../../ui/GameathonButton';
 import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
 import Image from 'next/image';
 import clsx from 'clsx';
+import { CONFIG } from '@/config/siteConfig';
 
 export default function HeroSection() {
   const t = useTranslations('hero');
@@ -144,8 +145,7 @@ export default function HeroSection() {
 
           <div className={clsx('mt-4 transition-all duration-1000 ease-in-out flex justify-center',
               isExpanded && isLargeScreen ? 'opacity-0 translate-y-6 pointer-events-none mb-24' : 'opacity-100 translate-y-0 mb-32')}>
-            <GameathonButton external size="large"
-              href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAaGjiwdUM0QwVzE1RUU5UVZKOTdCVUNLN1NEUVFIUC4u">
+            <GameathonButton external size="large" href={CONFIG.registerationLink}>
               {t('register') || 'Register'}
             </GameathonButton>
           </div>
