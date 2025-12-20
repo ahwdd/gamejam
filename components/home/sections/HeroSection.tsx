@@ -41,7 +41,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="absolute inset-0 z-0 brightness-200"
+      <div className="absolute inset-0 z-0 brightness-200 rtl:-scale-x-100"
         style={{backgroundImage: 'url(/assets/gameathon-bg-pattern.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',}}>
         <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/70" />
       </div>
@@ -81,8 +81,7 @@ export default function HeroSection() {
                 </p>
 
                 <button onClick={() => setIsExpanded((s) => !s)} aria-expanded={isExpanded}
-                  className={clsx(
-                    'absolute right-3 bottom-2.5 text-white font-bold cursor-pointer border-0 p-0 m-0',
+                  className={clsx('absolute rtl:left-3 ltr:right-3 bottom-2.5 text-white font-bold cursor-pointer border-0 p-0 m-0',
                     'hover:underline focus:outline-none bg-[#463f36]/65 rounded-full backdrop-blur-2xl',
                     'z-30')}>
                   {!isExpanded ? (
@@ -109,7 +108,7 @@ export default function HeroSection() {
                   showLocationHover? 'md:col-span-5 px-2': 'md:col-span-6 gap-3 px-1 md:px-4'
                 )}>
                   <FiCalendar className="text-[rgb(201,160,92)]/95 size-12 p-2" />
-                <div className="text-left min-w-0">
+                <div className="ltr:text-left rtl:text-right min-w-0">
                   <p className="text-gray-400 text-xs uppercase tracking-wide">{t('dateLabel')}</p>
                   <p className="text-white text-sm md:text-lg">{t('date')}</p>
                 </div>
@@ -123,16 +122,16 @@ export default function HeroSection() {
                   <FiMapPin className="text-[rgb(201,160,92)]/95 size-12 p-2" />
 
                   <div className="flex md:items-center max-md:justify-center gap-2 w-full max-md:flex-col">
-                    <div className="text-left min-w-0">
+                    <div className="ltr:text-left rtl:text-right min-w-0">
                       <p className="text-gray-400 text-xs uppercase tracking-wide">{t('locationLabel')}</p>
                       <p className="text-white text-sm md:text-lg truncate">{t('location')}</p>
                     </div>
 
                     <div className={clsx('transition-all duration-1000 ease-in-out flex items-center gap-1 opacity-100 max-w-xs translate-x-0',
-                        showLocationHover ? '' : 'md:opacity-0 md:max-w-0 md:translate-x-4')}>
+                        showLocationHover ? '' : 'md:opacity-0 md:max-w-0 md:rtl:-translate-x-4 md:ltr:translate-x-4')}>
                       <a href="https://maps.app.goo.gl/CfnJgL362c6RLac77" target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-1 text-white
-                        transition-colors whitespace-nowrap text-sm md:mt-4 md:border-l md:border-white md:pl-2">
+                        transition-colors whitespace-nowrap text-sm md:mt-4 md:rtl:border-r md:ltr:border-l md:border-white md:rtl:pr-2 md:ltr:pl-2">
                         <span className="underline">{t('openMaps')}</span>
                         <FiExternalLink className="md:text-lg text-sm" />
                       </a>

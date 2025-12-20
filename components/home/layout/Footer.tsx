@@ -30,20 +30,20 @@ export default function Footer() {
 
         <div className="grid md:grid-cols-3 gap-8 items-center mb-4 text-white">
           <div>
-            <p className="font-semibold text-lg md:text-2xl mb-2 backdrop-blur-xs rounded-xl w-fit">
+            <p className="font-semibold text-lg md:text-2xl mb-2 ltr:backdrop-blur-xs rtl:[text-shadow:0_2px_2px_rgba(0,0,0,5)] rounded-xl w-fit">
               {t('title')}
             </p>
-            <p className="text-gray-300 text-xl backdrop-blur-xs rounded-xl w-fit">
+            <p className="text-gray-300 text-xl ltr:backdrop-blur-xs rtl:[text-shadow:0_2px_2px_rgba(0,0,0,5)] rounded-xl w-fit">
               {t('subtitle')}
             </p>
           </div>
 
           <div>
-            <p className="font-semibold text-base md:text-xl mb-2">
+            <p className="font-semibold text-base md:text-xl mb-2 ltr:backdrop-blur-xs rtl:[text-shadow:0_2px_2px_rgba(0,0,0,5)]">
               {t('contactTitle')}
             </p>
             <a href={`mailto:${t('email')}`}
-              className="text-(--gameathon-gold) backdrop-blur-xs rounded-xl w-fit text-sm md:text-base">
+              className="text-(--gameathon-gold) ltr:backdrop-blur-xs rtl:[text-shadow:0_2px_2px_rgba(0,0,0,5)] rounded-xl w-fit text-sm md:text-base">
               {t('email')}
             </a>
           </div>

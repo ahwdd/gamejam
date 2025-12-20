@@ -2,16 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import GameathonButton from '../../ui/GameathonButton';
 import { FiGlobe, FiMenu, FiX } from 'react-icons/fi';
-import Image from 'next/image';
 import { CONFIG } from '@/config/siteConfig';
 
 export default function Header() {
   const t = useTranslations('header');
   const locale = useLocale();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -33,7 +34,10 @@ export default function Header() {
 
   const toggleLanguage = () => {
     const newLocale = locale === 'en' ? 'ar' : 'en';
-    router.push(`/${newLocale}`);
+    const pathWithoutLocale = (pathname ?? '/').replace(/^\/(en|ar)/, '') || '/';
+    const search = searchParams ? searchParams.toString() : '';
+    const searchSuffix = search ? `?${search}` : '';
+    router.push(`/${newLocale}${pathWithoutLocale}${searchSuffix}`);
   };
 
   return (

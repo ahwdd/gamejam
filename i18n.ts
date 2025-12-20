@@ -14,9 +14,7 @@ export default getRequestConfig(async ({ locale='en' }) => {
     locale,
     messages: {
       ...messages,
-      agenda: {
-        agenda
-      }
+      agenda
     }
   };
 });
