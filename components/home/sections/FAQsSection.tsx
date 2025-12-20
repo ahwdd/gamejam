@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import DecorativeFrames from './DecorativeFrame';
+import DecorativeFrames from '../more/DecorativeFrame';
 import { FiHelpCircle, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 export default function FAQsSection() {

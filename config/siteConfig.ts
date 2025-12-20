@@ -121,15 +121,3 @@ export const CONFIG = {
     maps: 'https://maps.google.com'
   }
 };
-
-export function getActivityIcon(activity: string): string {
-  const activityLower = activity.toLowerCase();
-  
-  for (const mapping of CONFIG.agenda.iconMappings) {
-    if (mapping.keywords.some(keyword => activityLower.includes(keyword.toLowerCase()))) {
-      return mapping.icon;
-    }
-  }
-  
-  return 'clock';
-}

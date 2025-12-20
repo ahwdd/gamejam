@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import DecorativeFrames from './DecorativeFrame';
+import DecorativeFrames from '../more/DecorativeFrame';
 import { FiUsers } from 'react-icons/fi';
 import Image from 'next/image';
 import { CONFIG } from '@/config/siteConfig';

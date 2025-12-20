@@ -7,7 +7,7 @@ import GetStartedSection from '@/components/home/sections/GetStartedSection';
 import JudgesSection from '@/components/home/sections/JudgesSection';
 import AgendaSection from '@/components/home/sections/AgendaSection';
 import FAQsSection from '@/components/home/sections/FAQsSection';
-import DecorativeFrames from '@/components/home/sections/DecorativeFrame';
+import DecorativeFrames from '@/components/home/more/DecorativeFrame';
 
 export default function LandingPage() {
   return (
