@@ -5,7 +5,6 @@ export default function LandingPage() {
 
   redirect("/en");
   return (
-      <div className="min-h-screen bg-black text-white">
-      </div>
+      <div className="min-h-screen bg-black text-white" />
   );
 }

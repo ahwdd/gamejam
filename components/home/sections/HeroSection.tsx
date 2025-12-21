@@ -43,7 +43,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       <div className="absolute inset-0 z-0 brightness-200 rtl:-scale-x-100"
         style={{backgroundImage: 'url(/assets/gameathon-bg-pattern.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',}}>
-        <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/50" />
       </div>
 
       <div className="container mx-auto px-4 z-10 py-12 relative">
@@ -56,18 +56,12 @@ export default function HeroSection() {
                    className="h-27 md:h-54 w-auto" priority />
           </div>
 
-          <div
-            ref={textWrapperRef}
-            className={clsx(
-              'relative bg-black/25 backdrop-blur-sm border rounded-lg px-4 py-2 mb-3 transition-all',
-              'border-[rgba(201,160,92,0.12)]',
-              'duration-1000 ease-in-out'
-            )}
-            style={{ zIndex: isExpanded && isLargeScreen ? 60 : undefined }}
-          >
+          <div ref={textWrapperRef}
+            className={clsx('relative bg-black/25 backdrop-blur-sm border rounded-lg px-4 py-2 mb-3 transition-all',
+              'border-[rgba(201,160,92,0.12)] duration-1000 ease-in-out')}
+            style={{ zIndex: isExpanded && isLargeScreen ? 60 : undefined }}>
             <div className="flex items-start gap-3">
-              <div className={clsx('w-full transition-all duration-1000 ease-in-out overflow-hidden', 
-              )}
+              <div className={clsx('w-full transition-all duration-1000 ease-in-out overflow-hidden max-md:pb-5')}
                 aria-expanded={isExpanded}>
                 <p className={clsx("text-gray-300 leading-relaxed text-base md:text-xl",
                   !isExpanded ? 'line-clamp-3!' : 'relative')}
@@ -75,18 +69,17 @@ export default function HeroSection() {
                     maxHeight: isExpanded && !isLargeScreen ? '36vh' : undefined,
                     overflowY: isExpanded && !isLargeScreen ? 'auto' : undefined,
                     WebkitOverflowScrolling: 'touch',
-                  }}
-                >
+                  }}>
                   {aboutNodes}
                 </p>
 
                 <button onClick={() => setIsExpanded((s) => !s)} aria-expanded={isExpanded}
-                  className={clsx('absolute rtl:left-3 ltr:right-3 bottom-2.5 text-white font-bold cursor-pointer border-0 p-0 m-0',
-                    'hover:underline focus:outline-none bg-[#463f36]/65 rounded-full backdrop-blur-2xl',
-                    'z-30')}>
+                  className={clsx('absolute md:rtl:left-3 md:ltr:right-3 md:bottom-2.5 bottom-1 text-white font-bold cursor-pointer',
+                    'hover:underline focus:outline-none bg-[#494239] md:bg-[#463f36]/65 rounded-full backdrop-blur-2xl',
+                    'z-30 border-0 p-0 m-0 max-md:left-1/2 max-md:-translate-x-1/2')}>
                   {!isExpanded ? (
                     <span className="inline-flex items-center">
-                      <span className="opacity-90">...</span>
+                      <span className="opacity-90 max-md:hidden">...</span>
                       <span className="ml-1">{t('readMore')}</span>
                     </span>
                   ) : (
@@ -143,22 +136,11 @@ export default function HeroSection() {
           </div>
 
           <div className={clsx('mt-4 transition-all duration-1000 ease-in-out flex justify-center',
-              isExpanded && isLargeScreen ? 'opacity-0 translate-y-6 pointer-events-none mb-24' : 'opacity-100 translate-y-0 mb-32')}>
+              isExpanded && isLargeScreen ? 'opacity-0 translate-y-6 pointer-events-none mb-6' : 'opacity-100 translate-y-0 mb-12')}>
             <GameathonButton external size="large" href={CONFIG.registerationLink}>
               {t('register') || 'Register'}
             </GameathonButton>
           </div>
-        </div>
-      </div>
-
-      <div className={clsx('absolute left-0 right-0 bottom-6 flex justify-center z-20 pointer-events-auto transition-all duration-1000',)}>
-        <div className="flex items-center justify-center gap-2 md:gap-8 flex-wrap">
-          <Image src="/assets/logos/sp1.png" alt="Sponsor 1" width={200} height={100}
-                 className="h-14 md:h-24 xl:h-32 w-auto" />
-          <Image src="/assets/logos/sp2.png" alt="Sponsor 2" width={200} height={100}
-                 className="h-8 md:h-16 xl:h-20 w-auto" />
-          <Image src="/assets/logos/sp3.png" alt="Sponsor 3" width={200} height={100}
-                 className="h-8 md:h-16 xl:h-20 w-auto" />
         </div>
       </div>
     </section>

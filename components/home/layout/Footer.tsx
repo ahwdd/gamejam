@@ -17,7 +17,8 @@ export default function Footer() {
       <DecorativeFrames />
 
       <div className="w-fit mx-auto bg-[#BC3E2B]/30 border border-[#BC3E2B]/80 rounded-2xl px-4 md:px-6 py-3 md:py-4 
-        flex items-center justify-center md:gap-3 gap-2 backdrop-blur-sm text-lg md:text-xl">
+        flex max-md:flex-col items-center justify-center md:gap-3 gap-2 backdrop-blur-sm text-lg md:text-xl 
+        max-md:w-full max-md:max-w-[calc(100%-1rem)]">
         <p className="text-(--gameathon-gold)">
           {contact('text')}
         </p>
@@ -48,7 +49,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end max-md:absolute max-md:bottom-5 max-md:w-full max-md:ltr:right-2 max-md:rtl:left-2">
             <GameathonButton href={CONFIG.registerationLink} size="small" external>
               {t('register')}
             </GameathonButton>

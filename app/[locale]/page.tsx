@@ -9,6 +9,7 @@ import JudgesSection from '@/components/home/sections/JudgesSection';
 import AgendaSection from '@/components/home/sections/AgendaSection';
 import FAQsSection from '@/components/home/sections/FAQsSection';
 import DecorativeFrames from '@/components/home/more/DecorativeFrame';
+import PartnersSection from '@/components/home/sections/PartnersSection';
 
 function HeaderFallback() {
   return (
@@ -29,6 +30,7 @@ export default function LandingPage() {
       <main className='bg-linear-to-b from-[#202020] to-[#232A2A] relative'>
         <DecorativeFrames />
         <HeroSection />
+        <PartnersSection />
         <PrizesSection />
         <GetStartedSection />
         <JudgesSection />
