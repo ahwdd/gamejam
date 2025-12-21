@@ -17,7 +17,7 @@
     "readMore": "Read More",
     "readLess": "Read Less",
     "register": "Register Now",
-    "aboutText": "<strong>Unity</strong> Technologies, together with <strong>Abu Dhabi Gaming</strong> and the <strong>Abu Dhabi Heritage Authority</strong>, is organizing the Heritage Gameathon, Abu Dhabi's largest game-creation event. The event focuses on celebrating Emirati culture through interactive digital storytelling. Over three days, participants will design and develop playable games inspired by the UAE's heritage, such as architecture, crafts, landscapes, folklore, music, and values. The Gameathon serves as a pathway to future opportunities, including mentorship programs and advanced training under Abu Dhabi Gaming initiatives. Participants are encouraged to use curated heritage references to ensure cultural representations are accurate, respectful, and responsible throughout their work."
+    "aboutText": "<strong>Unity</strong> Technologies, in collaboration with <strong>Abu Dhabi Gaming</strong> and <strong>Abu Dhabi Heritage Authority</strong>, proudly presents the Heritage Gameathon, Abu Dhabi's largest game creation event dedicated to celebrating Emirati culture through interactive digital storytelling.\nOver three immersive days, participants will design and develop playable games inspired by the UAE's unique heritage, traditions and stories. Whether focusing on architecture, crafts, landscapes, folklore, music or values, creators will explore the UAE's culture in meaningful, authentic and innovative ways.\nThe Heritage Gameathon serves as a pathway into future <strong>Abu Dhabi Gaming</strong> initiatives including mentorship programs and advanced training opportunities. The gameathon is a key step in developing the next generation of regional creators with the skills and experience to contribute to the global gaming industry.\nParticipants are encouraged to draw on curated heritage references to ensure responsible, respectful and accurate cultural representation throughout their work."
   },
   "prizes": {
     "badge": "Prizes & Awards",
@@ -33,7 +33,7 @@
     "fourthPrize": "AED 15,000",
     "fifth": "5th Place",
     "fifthPrize": "AED 10,000",
-    "beyondTitle": "Beyond the Game Jam",
+    "beyondTitle": "Beyond the Competition",
     "beyondDesc": "Top-performing teams will gain exclusive access to specialized gaming development programs. Participants will also navigate advanced game design methodologies and industry tools, preparing them for future challenges in the global gaming industry.",
     "beyondRich": "<p>The Heritage Gameathon is a structured talent development platform. Participants will strengthen their skills in:</p><ul><li>Game design and prototyping</li><li>Storytelling</li><li>Visual arts and animation</li><li>Coding and technical development</li><li>Teamwork</li></ul><p>Throughout the event, creators will receive guidance from industry mentors and technical experts from <strong>Unity Technologies</strong> and <strong>Abu Dhabi Gaming</strong>, ensuring a supportive and high-quality development environment.</p><p>In addition to the game jam, participants can enjoy a variety of engaging activities during the event, including workshops and cultural experiences.</p>"
   },
@@ -44,18 +44,18 @@
     "submitTitle": "Submit on Itch.io",
     "submitSubtitle": "Upload your game on submission day",
     "rulesTitle": "Rules & Conditions",
-    "rulesSubtitle": "Read the competition rules and guidelines",
+    "rulesSubtitle": "View rules & requirements",
     "joinTitle": "Who can join?",
     "joinSubtitle": "Open to university students, vocational learners, and early-career game developers across the UAE",
-    "toolsTitle": "Tools & Software",
+    "toolsTitle": "Development Tools & Software",
     "toolsSubtitle": "Unity engine and approved development tools"
   },
   "judges": {
     "badge": "Meet the Experts",
-    "title": "Judges & Mentors",
+    "title": "Gameathon Judges and Mentors",
     "subtitle": "Learn from industry professionals and cultural experts",
     "member1Name": "Agatha Hood",
-    "member1Role": "(judge)",
+    "member1Role": "Judge",
     "member2Name": "Corrie Green",
     "member2Role": "Mentor",
     "member3Name": "Ahmed Shweiki",
@@ -63,14 +63,16 @@
     "member4Name": "Zain Al Qudah",
     "member4Role": "Mentor",
     "member5Name": "Kalle Hiitola",
-    "member5Role": "Game Project lead",
+    "member5Role": "Judge",
     "member6Name": "Hamdan Al-Ali",
-    "member6Role": "Co-founder of Potion AI"
+    "member6Role": "Judge",
+    "member7Name": "Mohamed Al Qadi",
+    "member7Role": "Judge"
   },
   "agendaSection": {
     "badge": "Event Schedule",
-    "title": "3-Days Agenda",
-    "subtitle": "A carefully planned journey from concept to completion"
+    "title": "Three-Day Event Agenda",
+    "subtitle": "A development path carefully planned from concept to completion"
   },
   "faqs": {
     "badge": "FAQs",

@@ -77,6 +77,7 @@ export const CONFIG = {
       { key: 'member4', img: '/assets/team/Zain.jpg' },
       { key: 'member5', img: '/assets/team/Kalle.jpg' },
       { key: 'member6', img: '/assets/team/Hamdan.jpg' },
+      { key: 'member7', img: '/assets/team/Mohamed.jpg' },
     ]
   },
 
