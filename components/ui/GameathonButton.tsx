@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 interface GameathonButtonProps {
-  href: string;
+  href?: string;
   children: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   variant?: 'primary' | 'secondary';
@@ -43,14 +43,14 @@ export default function GameathonButton({ href, children, size = 'medium', varia
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+      <a href={href??''} target="_blank" rel="noopener noreferrer" className={classes}>
         {content}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={classes}>
+    <Link href={href??''} className={classes}>
       {content}
     </Link>
   );

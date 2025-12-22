@@ -31,6 +31,13 @@ export default function HeroSection() {
     }
   }, [isExpanded, isLargeScreen]);
 
+  const handleRegisterClick = () => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'Lead');
+    }
+    window.open(CONFIG.registerationLink, '_blank');
+  };
+
   const aboutNodes = t.rich(
     'aboutText',
     {
@@ -137,9 +144,11 @@ export default function HeroSection() {
 
           <div className={clsx('mt-4 transition-all duration-1000 ease-in-out flex justify-center',
               isExpanded && isLargeScreen ? 'opacity-0 translate-y-6 pointer-events-none mb-6' : 'opacity-100 translate-y-0 mb-12')}>
-            <GameathonButton external size="large" href={CONFIG.registerationLink}>
-              {t('register') || 'Register'}
-            </GameathonButton>
+            <div onClick={handleRegisterClick}>
+              <GameathonButton size="large">
+                {t('register') || 'Register'}
+              </GameathonButton>
+            </div>
           </div>
         </div>
       </div>
