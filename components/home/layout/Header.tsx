@@ -1,5 +1,3 @@
-// Update your Header.tsx
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,7 +6,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import GameathonButton from '../../ui/GameathonButton';
 import { FiGlobe, FiMenu, FiX } from 'react-icons/fi';
 import { CONFIG } from '@/config/siteConfig';
-import Script from 'next/script';
+// ❌ REMOVE THIS LINE:
+// import Script from 'next/script';
 
 export default function Header() {
   const t = useTranslations('header');
@@ -28,14 +27,9 @@ export default function Header() {
   }, []);
 
   const handleRegisterClick = () => {
-    console.log('Register button clicked');
-    
     if (typeof window !== 'undefined' && (window as any).fbq) {
-      console.log('fbq is available, tracking Lead');
       (window as any).fbq('track', 'Lead');
-      console.log('Lead event sent');
     }
-    
     window.open(CONFIG.registerationLink, '_blank');
   };
 
@@ -58,23 +52,8 @@ export default function Header() {
 
   return (
     <>
-      <Script id="meta-pixel" strategy="afterInteractive">
-        {`!function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '2193762604480703');
-          fbq('track', 'PageView');`}
-      </Script>
-      <noscript>
-        <img  height="1"  width="1"  style={{display: 'none'}}
-          src="https://www.facebook.com/tr?id=2193762604480703&ev=PageView&noscript=1"/>
-      </noscript>
-
+      {/* ❌ REMOVE THE ENTIRE <Script> AND <noscript> SECTION */}
+      
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex items-center justify-center ${
           isScrolled ? 'backdrop-blur-md shadow-lg ' : 'bg-transparent h-20'}`}>
         <div className="container mx-auto px-4">
