@@ -21,10 +21,9 @@ const RuleCard = ({ icon: Icon, titleEn, contentEn, type = 'default' }: RuleCard
 
   const getIconBg = () => {
     switch(type) {
-      case 'warning': return 'bg-[#BC3E2B]';
-      case 'success': return 'bg-[#364746]';
-      case 'info': return 'bg-[#C8A47F]';
-      default: return 'bg-amber-400';
+      case 'warning': return 'bg-[#BC3E2B]/20';
+      case 'success': return 'bg-[#364746]/20';
+      case 'info': return 'bg-[#C8A47F]/20';
     }
   };
 
@@ -65,13 +64,13 @@ export default function RulesSection() {
       icon: LuUserSearch,
       titleEn: t('teamSize.title'),
       contentEn: t('teamSize.content'),
-      type: 'default'
+      type: 'info'
     },
     {
       icon: BiShield,
       titleEn: t('ownership.title'),
       contentEn: t('ownership.content'),
-      type: 'info'
+      type: 'warning'
     },
     {
       icon: BiCheck,
@@ -83,7 +82,7 @@ export default function RulesSection() {
       icon: BsClock,
       titleEn: t('deadline.title'),
       contentEn: t('deadline.content'),
-      type: 'warning'
+      type: 'info'
     },
     {
       icon: FiX,
@@ -101,7 +100,7 @@ export default function RulesSection() {
       icon: BsWrench,
       titleEn: t('equipment.title'),
       contentEn: t('equipment.content'),
-      type: 'default'
+      type: 'success'
     }
   ];
 
@@ -109,7 +108,7 @@ export default function RulesSection() {
     <>
       <div className="h-20" />
       
-      <section className="relative py-8 md:py-16">
+      <section className="relative py-4 md:py-8">
         <div className="container mx-auto px-4 relative z-10">
           
           <h1 className="text-3xl md:text-5xl xl:text-7xl font-bold text-white text-center mb-4 md:mb-8">
@@ -122,7 +121,7 @@ export default function RulesSection() {
         </div>
       </section>
 
-      <section className="relative py-4 md:py-8">
+      <section className="relative py-2 md:py-4">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto grid gap-4 md:gap-6">
             {rules.map((rule, index) => (
@@ -132,10 +131,10 @@ export default function RulesSection() {
         </div>
       </section>
 
-      <section className="relative py-6 md:py-12">
+      <section className="relative py-2 md:py-4">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className=" rounded-xl p-6 md:p-8 backdrop-blur-sm">
+            <div className=" rounded-xl p-3 md:p-4 backdrop-blur-sm">
               <div className="flex items-start gap-3 md:gap-4">
                 
                 <div>

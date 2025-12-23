@@ -19,7 +19,7 @@ export default function RulesPage() {
         <Header />
       </Suspense>
 
-      <main className="bg-linear-to-b from-[#202020] to-[#232A2A] relative">
+      <main className="bg-linear-to-b from-[#202020] to-[#232A2A] relative pb-10">
                 <DecorativeFrames />
 
         <RulesSection />
