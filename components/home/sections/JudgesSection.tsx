@@ -12,7 +12,7 @@ export default function JudgesSection() {
   const t = useTranslations('judges');
 
   return (
-    <section id="judges" className="relative py-10 md:py-20">
+    <section id="judges" className="relative py-4 md:py-8">
       <div className="lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto px-4 relative z-10">
         
         <div className="flex justify-center">

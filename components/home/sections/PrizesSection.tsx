@@ -11,7 +11,7 @@ export default function PrizesSection() {
   const t = useTranslations('prizes');
 
   return (
-    <section id="prizes" className="relative py-10 md:py-20">
+    <section id="prizes" className="relative py-4 md:py-8">
 
       <div className="container mx-auto px-4 relative z-10 space-y-2 md:space-y-4">
         <div className="flex justify-center">

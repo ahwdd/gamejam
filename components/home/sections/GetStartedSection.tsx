@@ -11,7 +11,7 @@ export default function GetStartedSection() {
   const locale = useLocale();
 
   return (
-    <section id="rules" className="relative py-10 md:py-20 px-4">
+    <section id="rules" className="relative py-4 md:py-8 px-4">
       <div className="container mx-auto relative z-10">
 
         <h2 className="text-2xl md:text-4xl xl:text-6xl font-bold text-white text-center">
@@ -45,7 +45,7 @@ export default function GetStartedSection() {
                   className="inline-flex items-center gap-2 text-[#C8A47F] xl:text-lg md:text-sm text-xs font-bold group mt-2 md:mt-2.5 xl:mt-4">
                   <span>{t('learnMore')}</span>
                   <FiExternalLink className={`group-hover:translate-x-1 transition-transform 
-                    ${locale === 'ar' ? 'rotate-180' : ''}`}/>
+                    ${locale === 'ar' ? '-scale-x-100' : ''}`}/>
                 </a>
               )}
             </div>

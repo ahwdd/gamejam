@@ -110,5 +110,49 @@
     "register": "Register Now",
     "copyright": "© 2026 Heritage Gameathon. All rights reserved.",
     "poweredBy": "Powered by"
+  },
+  "rules": {
+    "title": "Heritage Gameathon Rules",
+    "subtitle": "Please read and understand all rules and requirements before participating in the Heritage Gameathon. These guidelines ensure a fair, respectful, and productive event for all participants.",
+    "originalWork": {
+      "title": "Original Work",
+      "content": "All games must be created entirely during the Game Jam period. Pre-made assets may be used only if they are free or legally owned by the team."
+    },
+    "theme": {
+      "title": "Theme",
+      "content": "All submissions must align with the official theme inspired by Emirati heritage and culture, announced at the start of the event."
+    },
+    "teamSize": {
+      "title": "Team Size",
+      "content": "Teams may consist of up to 8 participants. Individual participants will be matched with others if needed."
+    },
+    "ownership": {
+      "title": "Ownership & Usage Rights",
+      "content": "Games created during game jam remain the intellectual property of the creators. However, Abu Dhabi Gaming and the Abu Dhabi Heritage Authority reserve the full right to use, showcase, publish, modify, or distribute the games and related materials in any form for promotional, cultural, or educational purposes."
+    },
+    "conduct": {
+      "title": "Code of Conduct",
+      "content": "Participants are expected to maintain respectful and professional behaviour throughout the event. Any form of discrimination, harassment, or misconduct will result in disqualification."
+    },
+    "deadline": {
+      "title": "Submission Deadline",
+      "content": "Games must be submitted before the official deadline announced by the organizers. Late submissions will not be considered for judging."
+    },
+    "restrictions": {
+      "title": "Content Restrictions",
+      "content": "Games containing sexual, violent, discriminatory, or culturally inappropriate content are strictly prohibited. Any game violating these guidelines will be immediately disqualified."
+    },
+    "judging": {
+      "title": "Judging Criteria",
+      "content": "Entries will be evaluated based on creativity, cultural relevance, gameplay, art direction, and overall presentation."
+    },
+    "equipment": {
+      "title": "Equipment & Tools",
+      "content": "Participants must bring their own laptops, chargers, and necessary software. Internet access and power outlets will be provided at the venue."
+    },
+    "notice": {
+      "title": "Important Notice",
+      "content": "By participating in the Heritage Gameathon, you acknowledge that you have read, understood, and agree to abide by all rules and guidelines outlined above. The organizers reserve the right to make final decisions on all matters related to the event."
+    }
   }
 }

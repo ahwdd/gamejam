@@ -58,8 +58,7 @@ export const CONFIG = {
       {
         key: 'rules',
         icon: '/icons/ruler.png',
-        href: rolesLink,
-        external: true
+        href: '/rules',
       },
       {
         key: 'join',
