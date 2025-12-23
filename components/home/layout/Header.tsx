@@ -31,12 +31,12 @@ export default function Header() {
   };
 
   const navLinks = [
-    { label: t('partners'), href: '#partners' },
-    { label: t('prizes'), href: '#prizes' },
-    { label: t('judges'), href: '#judges' },
-    { label: t('agenda'), href: '#agenda' },
-    { label: t('rules'), href: '#rules' },
-    { label: t('faqs'), href: '#faqs' },
+    { label: t('partners'), href: '/#partners' },
+    { label: t('prizes'), href: '/#prizes' },
+    { label: t('judges'), href: '/#judges' },
+    { label: t('agenda'), href: '/#agenda' },
+    { label: t('rules'), href: '/rules' },
+    { label: t('faqs'), href: '/#faqs' },
   ];
 
   const toggleLanguage = () => {
