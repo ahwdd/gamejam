@@ -1,13 +1,17 @@
 const  registerationLink= "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAaGjiwdUM0QwVzE1RUU5UVZKOTdCVUNLN1NEUVFIUC4u"
+const itchLink = "https://turath-gameathon.itch.io"
+const rolesLink = "https://docs.google.com/document/d/1hJFNvg9dkARJiKouY6w-Wt0N17JjhWEocOrXJrpUhVU/edit?tab=t.0"
 
 export const CONFIG = {
-  registerationLink: registerationLink,
+  registerationLink,
+  itchLink,
+  rolesLink,
 
   prizes: {
     topPrizes: [
       {
         place: 2,
-        key: 'second', en: '2th Place', ar: 'المركز الثاني',
+        key: 'second', en: '2nd Place', ar: 'المركز الثاني',
         icon: '/icons/medal2.png',
         shadow: '0 0 76.7866px rgba(200,164,127,0.3)',
         bgColor: 'linear-gradient(135deg, rgba(200,164,127,0.17), rgba(200,164,127,0.17))',
@@ -17,7 +21,7 @@ export const CONFIG = {
       },
       {
         place: 1,
-        key: 'first', en: '1th Place', ar: 'المركز الأول',
+        key: 'first', en: '1st Place', ar: 'المركز الأول',
         icon: '/icons/medal1.png',
         shadow: '0 0 81.1581px rgba(188,62,43,0.3)',
         bgColor: 'linear-gradient(135deg, rgba(188,62,43,0.05), rgba(233,97,76,0.05))',
@@ -27,7 +31,7 @@ export const CONFIG = {
       },
       {
         place: 3,
-        key: 'third', en: '3th Place', ar: 'المركز الثالث',
+        key: 'third', en: '3rd Place', ar: 'المركز الثالث',
         icon: '/icons/medal3.png',
         shadow: '0 0 76.7866px rgba(54,71,70,0.3)',
         bgColor: 'linear-gradient(135deg, rgba(54,71,70,0.3), rgba(54,71,70,0.06))',
@@ -48,13 +52,14 @@ export const CONFIG = {
       {
         key: 'submit',
         icon: '/icons/game-store.png',
-        href: registerationLink,
+        href: itchLink,
         external: true
       },
       {
         key: 'rules',
         icon: '/icons/ruler.png',
-        href: '#rules'
+        href: rolesLink,
+        external: true
       },
       {
         key: 'join',

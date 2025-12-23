@@ -27,9 +27,9 @@ export default function LandingPage() {
         <Header />
       </Suspense>
 
-      <main className='bg-linear-to-b from-[#202020] to-[#232A2A] relative'>
+      <HeroSection />
+      <main className='bg-linear-to-b from-[#202020] to-[#232A2A] relative md:space-y-8 space-y-4'>
         <DecorativeFrames />
-        <HeroSection />
         <PartnersSection />
         <PrizesSection />
         <GetStartedSection />

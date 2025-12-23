@@ -67,7 +67,8 @@ export default function HeroSection() {
             <div className="flex items-start gap-3">
               <div className={clsx('w-full transition-all duration-1000 ease-in-out overflow-hidden max-md:pb-5')}
                 aria-expanded={isExpanded}>
-                <p className={clsx("text-gray-300 leading-relaxed text-base md:text-xl whitespace-pre-line",
+                <p className={clsx("text-gray-300 leading-relaxed text-base md:text-xl whitespace-pre-line ",
+                  "rtl:text-right ltr:text-left transition-all duration-1000",
                   !isExpanded ? 'line-clamp-3!' : 'relative')}
                   style={{
                     maxHeight: isExpanded && !isLargeScreen ? '36vh' : undefined,

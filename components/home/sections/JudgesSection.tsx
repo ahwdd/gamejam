@@ -29,24 +29,66 @@ export default function JudgesSection() {
           {t('subtitle')}
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-md:gap-y-2">
+        {/* Mobile: 2 columns grid */}
+        <div className="grid grid-cols-2 gap-6 gap-y-2 md:hidden">
           {CONFIG.judges.team.map((member: any) => (
-            <div key={member.key}
-              className="relative rounded-2xl">
+            <div key={member.key} className="relative rounded-2xl">
               <div className="aspect-square">
-                <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400} className="w-full h-full object-cover rounded-4xl"/>
+                <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400} 
+                className="w-full h-full object-cover rounded-4xl max-w-66 max-h-66"/>
               </div>
-
               <div className="flex flex-col justify-center items-center gap-1 p-4">
-                <h3 className="text-white font-bold text-lg md:text-xl text-center">
+                <h3 className="text-white font-bold text-lg text-center">
                   {t(`${member.key}Name`)}
                 </h3>
-                <p className="text-gray-300 text-sm md:text-base w-[120%] text-center">
+                <p className="text-gray-300 text-sm w-[120%] text-center">
                   {t(`${member.key}Role`)}
                 </p>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Desktop: Pyramid layout (3 top, 4 bottom) */}
+        <div className="hidden md:block">
+          {/* Top row: 3 judges centered */}
+          <div className="grid grid-cols-3 gap-6 mb-6 max-w-4xl mx-auto">
+            {CONFIG.judges.team.slice(0, 3).map((member: any) => (
+              <div key={member.key} className="relative rounded-2xl">
+                <div className="aspect-square">
+                  <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400} 
+                  className="w-full h-full object-cover rounded-4xl max-w-66 max-h-66"/>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-1 p-4">
+                  <h3 className="text-white font-bold text-xl text-center">
+                    {t(`${member.key}Name`)}
+                  </h3>
+                  <p className="text-gray-300 text-base w-[120%] text-center">
+                    {t(`${member.key}Role`)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom row: 4 judges */}
+          <div className="grid grid-cols-4 gap-6">
+            {CONFIG.judges.team.slice(3, 7).map((member: any) => (
+              <div key={member.key} className="relative rounded-2xl">
+                <div className="aspect-square">
+                  <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400} className="w-full h-full object-cover rounded-4xl"/>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-1 p-4">
+                  <h3 className="text-white font-bold text-xl text-center">
+                    {t(`${member.key}Name`)}
+                  </h3>
+                  <p className="text-gray-300 text-base w-[120%] text-center">
+                    {t(`${member.key}Role`)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
