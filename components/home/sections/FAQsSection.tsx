@@ -74,7 +74,8 @@ export default function FAQsSection() {
             <motion.li key={index} variants={fadeUpItem}
             initial="hidden" whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
-              className="w-full bg-white/5 border-white/10 border rounded-3xl overflow-hidden backdrop-blur-sm">
+              className="w-full bg-white/5 border-white/10 border rounded-3xl overflow-hidden backdrop-blur-sm 
+              hover:scale-x-98 ease-in-out duration-700 transition">
               <button id={`faq-${index}-button`} aria-expanded={openIndex === index} aria-controls={`faq-${index}`}
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex items-center justify-between p-6 text-left">
