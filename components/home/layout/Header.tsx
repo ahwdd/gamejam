@@ -6,8 +6,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import GameathonButton from '../../ui/GameathonButton';
 import { FiGlobe, FiMenu, FiX } from 'react-icons/fi';
 import { CONFIG } from '@/config/siteConfig';
-// ❌ REMOVE THIS LINE:
-// import Script from 'next/script';
 
 export default function Header() {
   const t = useTranslations('header');
@@ -49,8 +47,6 @@ export default function Header() {
 
   return (
     <>
-      {/* ❌ REMOVE THE ENTIRE <Script> AND <noscript> SECTION */}
-      
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex items-center justify-center ${
           isScrolled ? 'backdrop-blur-md shadow-lg ' : 'bg-transparent h-20'}`}>
         <div className="container mx-auto px-4">

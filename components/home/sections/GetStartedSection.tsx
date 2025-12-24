@@ -4,7 +4,9 @@ import React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { FiExternalLink } from 'react-icons/fi';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { CONFIG } from '@/config/siteConfig';
+import { staggerContainer, fadeUpItem } from '@/motion/motion';
 
 export default function GetStartedSection() {
   const t = useTranslations('getStarted');
@@ -14,20 +16,33 @@ export default function GetStartedSection() {
     <section id="rules" className="relative py-4 md:py-8 px-4">
       <div className="container mx-auto relative z-10">
 
-        <h2 className="text-2xl md:text-4xl xl:text-6xl font-bold text-white text-center">
+        <motion.h2 variants={fadeUpItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          className="text-2xl md:text-4xl xl:text-6xl font-bold text-white text-center">
           {t('badge')}
-        </h2>
+        </motion.h2>
 
-        <p className="text-sm md:text-xl xl:text-2xl text-gray-400 text-center lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto mb-6 md:mb-16">
+        <motion.p variants={fadeUpItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          className="text-sm md:text-xl xl:text-2xl text-gray-400 text-center lg:max-w-6xl 
+          sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto mb-6 md:mb-16">
           {t('title')}
-        </p>
+        </motion.p>
 
         <div className="grid sm:grid-cols-2 gap-6 lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto">
           {CONFIG.getStarted.items.map((item: any) => (
-            <div key={item.key}
-              className="bg-white/5 border border-white/10 rounded-3xl xl:p-10 p-6 backdrop-blur-sm space-y-1.5 md:space-y-2 xl:space-y-3
-              max-md:flex max-md:flex-col max-md:items-center">
-              <div className="bg-[#C8A47F] rounded-3xl p-4 xl:p-5 size-16 xl:size-22 flex items-center justify-center mb-6 md:mb-8 xl:mb-12">
+            <motion.div key={item.key} variants={fadeUpItem}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              className="bg-white/5 border border-white/10 rounded-3xl xl:p-10 p-6 backdrop-blur-sm 
+              space-y-1.5 md:space-y-2 xl:space-y-3 max-md:flex max-md:flex-col max-md:items-center">
+              <div className="bg-[#C8A47F] rounded-3xl p-4 xl:p-5 size-16 xl:size-22 
+                flex items-center justify-center mb-6 md:mb-8 xl:mb-12">
                 <Image src={item.icon} alt={t(`${item.key}Title`)} width={32} height={32} 
                   className="size-8 md:size-16 object-contain"/>
               </div>
@@ -41,14 +56,15 @@ export default function GetStartedSection() {
               </p>
 
               {item.href && (
-                <a href={item.href} target={item.external? "_blank": "_self"} rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#C8A47F] xl:text-lg md:text-sm text-xs font-bold group mt-2 md:mt-2.5 xl:mt-4">
+                <a href={item.href} target={item.external ? '_blank' : '_self'} rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#C8A47F] xl:text-lg md:text-sm 
+                  text-xs font-bold group mt-2 md:mt-2.5 xl:mt-4">
                   <span>{t('learnMore')}</span>
                   <FiExternalLink className={`group-hover:translate-x-1 transition-transform 
                     ${locale === 'ar' ? '-scale-x-100' : ''}`}/>
                 </a>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
