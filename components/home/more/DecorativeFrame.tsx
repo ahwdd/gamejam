@@ -1,14 +1,13 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import FloatingBallsDOM from './FloatingBallsDOM';
 
-export default function DecorativeFrames() {
+export default function DecorativeFrames({min=2, max=5}) {
   return (
     <>
     
-      <FloatingBallsDOM countMin={25} countMax={35} />
+      <FloatingBallsDOM countMin={min} countMax={max} />
       <div aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 h-full z-0 w-[8%] md:w-[6%] lg:w-[5%] md:max-w-24 max-w-10 
         bg-repeat-y md:bg-size-[6rem,auto] bg-size-[2.5rem,auto] bg-top-right"

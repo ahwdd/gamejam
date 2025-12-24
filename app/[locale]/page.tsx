@@ -29,7 +29,7 @@ export default function LandingPage() {
 
       <HeroSection />
       <main className='bg-linear-to-b from-[#202020] to-[#232A2A] relative'>
-        <DecorativeFrames />
+        <DecorativeFrames min={25} max={35} />
         <PartnersSection />
         <PrizesSection />
         <GetStartedSection />
