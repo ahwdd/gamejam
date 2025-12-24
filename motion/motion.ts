@@ -12,6 +12,7 @@ export const staggerContainer: Variants = {
       staggerChildren: 0.18,
       delayChildren: 0.1,
     },
+    willChange: "transform"
   },
 };
 
@@ -24,6 +25,7 @@ export const fadeUpItem: Variants = {
     opacity: 1,
     y: 0,
     transition: smoothFadeUp,
+    willChange: "opacity, transform"
   },
 };
 
@@ -41,5 +43,6 @@ export const floatVariants: Variants = {
     opacity: 0.9,
     scale: 1,
     transition: slowFloatTransition,
+    willChange: "opacity, transform"
   },
 };
