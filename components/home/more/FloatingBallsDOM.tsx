@@ -1,4 +1,3 @@
-// components/home/more/FloatingBallsDOM.tsx
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -71,6 +70,19 @@ export default function FloatingBallsDOM({ countMin = 6, countMax = 10 }: { coun
   const [balls, setBalls] = useState<Ball[] | null>(null);
 
   useEffect(() => {
+    const vw = window.innerWidth;
+
+    const breakpointPercent = vw >= 1024 ? 5 : vw >= 768 ? 6 : 8;
+
+    const maxPx = vw >= 768 ? 96 : 40;
+
+    const rawFramePx = (vw * breakpointPercent) / 100;
+    const framePx = Math.min(rawFramePx, maxPx);
+    const effectiveFramePercent = (framePx / vw) * 100;
+    const leftBoundPct = effectiveFramePercent;
+    const rightBoundPct = effectiveFramePercent;
+    const availablePct = Math.max(0, 100 - leftBoundPct - rightBoundPct);
+
     const count = Math.floor(rand(countMin, countMax + 1));
     const generated: Ball[] = Array.from({ length: count }).map((_, i) => {
       const hex = pick(palette);
@@ -78,20 +90,61 @@ export default function FloatingBallsDOM({ countMin = 6, countMax = 10 }: { coun
       const outerAlpha = clamp(rand(0.40, 0.65), 0.4, 0.65);
       const innerAlpha = clamp(rand(0.75, 1), 0.75, 1);
 
-      const size = Math.round(rand(10, 36));
-      const left = `${rand(4, 96).toFixed(2)}%`;
-      const top = `${rand(2, 94).toFixed(2)}%`;
+      const size = Math.round(rand(30, 50));
+      const sizePct = (size / vw) * 100;
+      const maxOffsetForBall = Math.max(0, availablePct - sizePct);
+      const leftPct = leftBoundPct + rand(0, maxOffsetForBall);
+      const topPct = rand(2, 94);
+
       const duration = Number(rand(8, 20).toFixed(2));
       const delay = Number(rand(0, 8).toFixed(2));
       const horizAmp = Number(rand(6, 36).toFixed(2));
       const vertAmp = Number(rand(6, 36).toFixed(2));
       const rotate = Number(rand(-12, 12).toFixed(2));
 
-      return { key: `${i}-${hex}-${size}`, hex, rgb, outerAlpha, innerAlpha, size, left, top, duration, delay, horizAmp, vertAmp, rotate };
+      return { key: `${i}-${hex}-${size}`, hex, rgb, outerAlpha, innerAlpha, size, left: `${leftPct.toFixed(2)}%`, 
+      top: `${topPct.toFixed(2)}%`, duration, delay, horizAmp, vertAmp, rotate };
     });
 
     setBalls(generated);
+    
+    const onResize = () => {
+      setBalls(null);
+      setTimeout(() => {
+        const vwNow = window.innerWidth;
+        const breakpointPercentNow = vwNow >= 1024 ? 5 : vwNow >= 768 ? 6 : 8;
+        const maxPxNow = vwNow >= 768 ? 96 : 40;
+        const rawFramePxNow = (vwNow * breakpointPercentNow) / 100;
+        const framePxNow = Math.min(rawFramePxNow, maxPxNow);
+        const effFramePctNow = (framePxNow / vwNow) * 100;
+        const leftBoundPctNow = effFramePctNow;
+        const rightBoundPctNow = effFramePctNow;
+        const availablePctNow = Math.max(0, 100 - leftBoundPctNow - rightBoundPctNow);
 
+        const newGen: Ball[] = Array.from({ length: count }).map((_, i) => {
+          const hex2 = pick(palette);
+          const rgb2 = hexToRgb(hex2);
+          const outerAlpha2 = clamp(rand(0.40, 0.65), 0.4, 0.65);
+          const innerAlpha2 = clamp(rand(0.75, 1), 0.75, 1);
+          const size2 = Math.round(rand(30, 50));
+          const sizePct2 = (size2 / vwNow) * 100;
+          const maxOffsetForBall2 = Math.max(0, availablePctNow - sizePct2);
+          const leftPct2 = leftBoundPctNow + rand(0, maxOffsetForBall2);
+          const topPct2 = rand(2, 94);
+          const duration2 = Number(rand(8, 20).toFixed(2));
+          const delay2 = Number(rand(0, 8).toFixed(2));
+          const horizAmp2 = Number(rand(6, 36).toFixed(2));
+          const vertAmp2 = Number(rand(6, 36).toFixed(2));
+          const rotate2 = Number(rand(-12, 12).toFixed(2));
+          return { key: `${i}-${hex2}-${size2}`, hex: hex2, rgb: rgb2, outerAlpha: outerAlpha2, innerAlpha: innerAlpha2, 
+          size: size2, left: `${leftPct2.toFixed(2)}%`, top: `${topPct2.toFixed(2)}%`, duration: duration2, delay: delay2, 
+          horizAmp: horizAmp2, vertAmp: vertAmp2, rotate: rotate2 } as Ball;
+        });
+        setBalls(newGen);
+      }, 80);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [countMin, countMax, palette]);
 
   if (!balls) return null;
@@ -116,7 +169,7 @@ export default function FloatingBallsDOM({ countMin = 6, countMax = 10 }: { coun
             delay: b.delay,
           }}
           style={{ left: b.left, top: b.top, width: b.size, height: b.size,
-            backgroundImage: `radial-gradient(circle at 30% 30%, rgba(255,255,255,${b.innerAlpha}) 0%, rgba(${b.rgb},${b.outerAlpha}) 40%, rgba(${b.rgb},0) 70%)`,
+            backgroundImage: `radial-gradient(circle at 30% 30%, rgba(255,255,255,${b.innerAlpha}) 0%, rgba(${b.rgb},.5) 40%, rgba(${b.rgb},0) 70%)`,
             opacity: clamp(rand(0.65, 0.95), 0.45, 1),
             willChange: 'transform, opacity',
           }}
