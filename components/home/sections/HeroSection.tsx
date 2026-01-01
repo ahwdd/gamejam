@@ -127,7 +127,7 @@ export default function HeroSection() {
 
                     <div className={clsx('transition-all duration-1000 ease-in-out flex items-center gap-1 opacity-100 max-w-xs translate-x-0',
                         showLocationHover ? '' : 'md:opacity-0 md:max-w-0 md:rtl:-translate-x-4 md:ltr:translate-x-4')}>
-                      <a href="https://maps.app.goo.gl/CfnJgL362c6RLac77" target="_blank" rel="noopener noreferrer"
+                      <a href="https://maps.app.goo.gl/QUGkWrDJh5QPDkJY9?g_st=ipc" target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-1 text-white
                         transition-colors whitespace-nowrap text-sm md:mt-4 md:rtl:border-r md:ltr:border-l md:border-white md:rtl:pr-2 md:ltr:pl-2">
                         <span className="underline">{t('openMaps')}</span>
