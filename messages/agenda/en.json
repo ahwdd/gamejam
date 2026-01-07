@@ -41,9 +41,9 @@
         { "time": "10:00 - 13:00", "key": "group", "activity": "Game Prototyping and Development - Session 4", "location": "Indoor Sports Hall", "speaker": "Mentors Check-in" },
         { "time": "13:00 - 14:00", "key": "clock", "activity": "Lunch Break", "location": "" },
         { "time": "14:00 - 16:00", "key": "group", "activity": "Game Polishing", "location": "Indoor Sports Hall" },
-        { "time": "16:00 - 17:00", "key": "clock", "activity": "Submission Deadline", "location": "Online Submission Portal", "note": "Ensure all files are uploaded as specified" },
-        { "time": "17:00 - 18:00", "key": "group", "activity": "Judging and Evaluation Period", "location": "Indoor Sports Hall", "note": "Each team presents their game to the public and judges", "speaker": "Judges" },
-        { "time": "18:00 - 19:00", "key": "group", "activity": "Awards Ceremony", "location": "Indoor Sports Hall", "note": "Announcing winners and future event details" },
+        { "time": "16:00 - 16:30", "key": "clock", "activity": "Submission Deadline", "location": "Online Submission Portal", "note": "Ensure all files are uploaded as specified" },
+        { "time": "16:30 - 18:30", "key": "group", "activity": "Judging and Evaluation Period", "location": "Indoor Sports Hall", "note": "Each team presents their game to the public and judges", "speaker": "Judges" },
+        { "time": "18:30 - 19:00", "key": "group", "activity": "Awards Ceremony", "location": "Indoor Sports Hall", "note": "Announcing winners and future event details" },
         { "time": "19:00", "key": "calendar", "activity": "Event Conclusion", "location": "" }
       ]
     }
