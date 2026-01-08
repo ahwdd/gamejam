@@ -1,116 +1,99 @@
 'use client';
 
 import React from 'react';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, Transition } from 'framer-motion';
 import { CONFIG } from '@/config/siteConfig';
-import GameathonBadge from '@/components/ui/GameathonBadge';
-import { staggerContainer, fadeUpItem } from '@/motion/motion';
+import MemberCard, { BilingualDescription, BilingualTitle } from '../more/MemberCard';
 
-export default function JudgesSection() {
-  const t = useTranslations('judges');
+
+export default function JudgesMentorsSection() {
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 } as Transition
+    }
+  };
+
+  const fadeUpItem = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } as Transition }
+  };
 
   return (
     <section id="judges" className="relative py-4 md:py-8">
       <div className="lg:max-w-6xl sm:max-w-[calc(100%-7rem)] max-w-[calc(100%-.5rem)] mx-auto px-4 relative z-10">
 
-        <motion.div variants={staggerContainer}
-          initial="hidden" whileInView="visible"
+        <motion.div variants={staggerContainer} 
+          className='space-y-2 lg:space-y-4'
+          initial="hidden" 
+          whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}>
-          <motion.div variants={fadeUpItem} className="flex justify-center">
-            <GameathonBadge className="text-sm md:text-lg xl:text-xl">
-              {t('badge')}
-            </GameathonBadge>
+
+          <motion.div variants={fadeUpItem}>
+            <BilingualTitle enText="Judges and Mentors" 
+              arText="المحكمون والمرشدون" />
           </motion.div>
 
-          <motion.h2 variants={fadeUpItem}
-            className="text-3xl md:text-5xl xl:text-7xl font-bold text-white text-center mb-2 md:mb-4">
-            {t('title')}
-          </motion.h2>
+          <motion.div variants={fadeUpItem}>
+            <BilingualDescription enText="Judges: Evaluate final games and provide fair, structured feedback."
+              arText="لجنة التحكيم: يقيًمون الألعاب النهائية مع ملاحظات عادلة ومنهجية."/>
+          </motion.div>
 
-          <motion.p variants={fadeUpItem}
-            className="text-sm md:text-xl xl:text-2xl text-gray-400 text-center mb-12 md:mb-16">
-            {t('subtitle')}
-          </motion.p>
+          {/* Judges Grid - Mobile (2 columns) */}
+          {/* <div className="grid grid-cols-2 gap-4 md:hidden mb-12">
+            {CONFIG.judges.judges.map((judge, index) => (
+              <motion.div key={index} variants={fadeUpItem}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-80px' }}>
+                <MemberCard member={judge} />
+              </motion.div>
+            ))}
+          </div> */}
+
+          {/* Judges Grid - Desktop (up to 5 columns) */}
+          <motion.div variants={staggerContainer}
+            initial="hidden" 
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            className="flex flex-wrap items-start justify-center gap-4 max-md:gap-y-2 lg:gap-6 lg:my-6 sm:my-4 my-2 xl:mx-8 md:mx-6">
+            {CONFIG.judges.judges.map((judge, index) => (
+              <MemberCard key={index} member={judge} className="lg:w-[calc(20%-1.5rem)]! w-[calc(33%-1rem)]!" />
+            ))}
+          </motion.div>
+
+          {/* Mentors Description */}
+          <motion.div variants={fadeUpItem} className='lg:mb-8 sm:mb-4 mb-2'>
+            <BilingualDescription 
+              enText="Mentors: Guide teams, offer expertise, and support development."
+              arText="المرشدون: يوجًهون الفرق، ويقدًمون خبراتهم، ويدعمون عملية التطوير."
+            />
+          </motion.div>
+
+          {/* Mentors Grid - Mobile (2 columns) */}
+          {/* <div className="flex items-center justify-around flex-wrap gap-4 md:hidden">
+            {CONFIG.judges.mentors.map((mentor, index) => (
+              <motion.div key={index} variants={fadeUpItem}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-80px' }}>
+                <MemberCard member={mentor} isMentor={true} />
+              </motion.div>
+            ))}
+          </div> */}
+
+          {/* Mentors Grid - Desktop (up to 4 columns) */}
+          <motion.div variants={staggerContainer}
+            initial="hidden" 
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            className="flex gap-4 max-md:gap-y-2 items-center justify-center xl:mx-8 md:mx-6">
+            {CONFIG.judges.mentors.map((mentor, index) => (
+              <MemberCard key={index} member={mentor} isMentor={true} />
+            ))}
+          </motion.div>
         </motion.div>
-
-        {/* Mobile */}
-        <div className="grid grid-cols-2 gap-6 gap-y-2 md:hidden">
-          {CONFIG.judges.team.map((member: any) => (
-            <motion.div key={member.key} variants={fadeUpItem} 
-              initial="hidden" whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              className="relative rounded-2xl">
-              <div className="aspect-square">
-                <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400}
-                  className="w-full h-full object-cover rounded-4xl max-w-66 max-h-66"/>
-              </div>
-
-              <div className="flex flex-col justify-center items-center gap-1 p-4">
-                <h3 className="text-white font-bold text-lg text-center">
-                  {t(`${member.key}Name`)}
-                </h3>
-                <p className="text-gray-300 text-sm w-[120%] text-center">
-                  {t(`${member.key}Role`)}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Desktop */}
-        <div className="hidden md:block">
-
-          {/* Top row */}
-          <motion.div variants={staggerContainer}
-            initial="hidden" whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            className="grid grid-cols-3 gap-6 mb-6 max-w-4xl mx-auto">
-            {CONFIG.judges.team.slice(0, 3).map((member: any) => (
-              <motion.div key={member.key} variants={fadeUpItem} className="relative rounded-2xl">
-                <div className="aspect-square">
-                  <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400}
-                    className="w-full h-full object-cover rounded-4xl max-w-66 max-h-66"/>
-                </div>
-
-                <div className="flex flex-col justify-center items-center gap-1 p-4">
-                  <h3 className="text-white font-bold text-xl text-center">
-                    {t(`${member.key}Name`)}
-                  </h3>
-                  <p className="text-gray-300 text-base w-[120%] text-center">
-                    {t(`${member.key}Role`)}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Bottom row */}
-          <motion.div variants={staggerContainer}
-            initial="hidden" whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            className="grid grid-cols-4 gap-6">
-            {CONFIG.judges.team.slice(3, 7).map((member: any) => (
-              <motion.div key={member.key} variants={fadeUpItem} className="relative rounded-2xl">
-                <div className="aspect-square">
-                  <Image src={member.img} alt={t(`${member.key}Name`)} width={400} height={400}
-                    className="w-full h-full object-cover rounded-4xl"/>
-                </div>
-
-                <div className="flex flex-col justify-center items-center gap-1 p-4">
-                  <h3 className="text-white font-bold text-xl text-center">
-                    {t(`${member.key}Name`)}
-                  </h3>
-                  <p className="text-gray-300 text-base w-[120%] text-center">
-                    {t(`${member.key}Role`)}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-        </div>
       </div>
     </section>
   );

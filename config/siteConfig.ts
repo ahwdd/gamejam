@@ -74,14 +74,60 @@ export const CONFIG = {
   },
 
   judges: {
-    team: [
-      { key: 'member1', img: '/assets/team/Agatha.jpg' },
-      { key: 'member2', img: '/assets/team/Corrie.jpg' },
-      { key: 'member3', img: '/assets/team/Ahmed.jpg' },
-      { key: 'member4', img: '/assets/team/Zain.jpg' },
-      { key: 'member5', img: '/assets/team/Kalle.jpg' },
-      { key: 'member6', img: '/assets/team/Hamdan.jpg' },
-      { key: 'member7', img: '/assets/team/Mohamed.jpg' },
+    // team: [
+    //   { key: 'member1', img: '/assets/team/Agatha.jpg', role: 'judge' },
+    //   { key: 'member2', img: '/assets/team/Kalle.jpg', role: 'judge' },
+    //   { key: 'member3', img: '/assets/team/Hamdan.jpg', role: 'judge' },
+    //   { key: 'member4', img: '/assets/team/Marcos.jpg', role: 'judge' },
+    //   { key: 'member5', img: '/assets/team/Saeed.jpg', role: 'judge' },
+    //   { key: 'member6', img: '/assets/team/Corrie.jpg', role: 'mentor' },
+    //   { key: 'member7', img: '/assets/team/Ahmed.jpg', role: 'mentor' },
+    //   { key: 'member8', img: '/assets/team/Zain.jpg', role: 'mentor' },
+    //   // { key: 'member9', img: '/assets/team/Mohamed.jpg', role: 'mentor' },
+    // ],
+    judges: [
+      {
+        img: '/assets/team/Agatha.jpg',
+        enName: 'Agatha Hood', arName: 'أجاثا هود',
+        enRole: 'Judge', arRole: 'حَكَم'
+      },
+      {
+        img: '/assets/team/Kalle.jpg',
+        enName: 'Kalle Hiitola', arName: 'كالي هيتولا',
+        enRole: 'Judge', arRole: 'حَكَم'
+      },
+      {
+        img: '/assets/team/Hamdan.jpg',
+        enName: 'Hamdan Al-Ali', arName: 'حمدان العلي',
+        enRole: 'Judge', arRole: 'حَكَم'
+      },
+      {
+        img: '/assets/team/Marcos.jpg',
+        enName: 'Marcos Muller Habig', arName: 'ماركوس مولر-هابِغ',
+        enRole: 'Judge', arRole: 'حَكَم'
+      },
+      {
+        img: '/assets/team/Saeed.jpg',
+        enName: 'Saeed Mohamed Al Mehairi', arName: 'سعيد محمد المهيري',
+        enRole: 'Judge', arRole: 'حَكَم'
+      }
+    ],
+    mentors: [
+      {
+        img: '/assets/team/Corrie.jpg',
+        enName: 'Corrie Green', arName: 'كوري جرين',
+        enRole: 'Mentor', arRole: 'مُوجِّه'
+      },
+      {
+        img: '/assets/team/Ahmed.jpg',
+        enName: 'Ahmed Shweiki', arName: 'أحمد شويكي',
+        enRole: 'Mentor', arRole: 'مُوجِّه'
+      },
+      {
+        img: '/assets/team/Zain.jpg',
+        enName: 'Zain Al Qudah', arName: 'زين القضاة',
+        enRole: 'Mentor', arRole: 'مُوجِّه'
+      }
     ]
   },
 
