@@ -108,11 +108,16 @@ export const CONFIG = {
       },
       {
         img: '/assets/team/Saeed.jpg',
-        enName: 'Saeed Mohamed Al Mehairi', arName: 'سعيد محمد المهيري',
+        enName: 'Saeed Mohamed Al-Mehairi', arName: 'سعيد محمد المهيري',
         enRole: 'Judge', arRole: 'حَكَم'
       }
     ],
     mentors: [
+      {
+        img: '/assets/team/Zain.jpg',
+        enName: 'Zain Al Qudah', arName: 'زين القضاة',
+        enRole: 'Mentor', arRole: 'مُوجِّه'
+      },
       {
         img: '/assets/team/Corrie.jpg',
         enName: 'Corrie Green', arName: 'كوري جرين',
@@ -123,11 +128,6 @@ export const CONFIG = {
         enName: 'Ahmed Shweiki', arName: 'أحمد شويكي',
         enRole: 'Mentor', arRole: 'مُوجِّه'
       },
-      {
-        img: '/assets/team/Zain.jpg',
-        enName: 'Zain Al Qudah', arName: 'زين القضاة',
-        enRole: 'Mentor', arRole: 'مُوجِّه'
-      }
     ]
   },
 
